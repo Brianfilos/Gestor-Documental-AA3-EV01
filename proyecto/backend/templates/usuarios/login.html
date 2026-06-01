@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Iniciar Sesión - Gestor Documental{% endblock %}
+
+{% block auth_content %}
+<div class="min-vh-100 d-flex align-items-center justify-content-center"
+     style="background: linear-gradient(135deg, #0D47A1 0%, #1565C0 50%, #1976D2 100%);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-md-7 col-lg-5 col-xl-4">
+                <!-- Logo y título -->
+                <div class="text-center mb-4">
+                    <div class="d-inline-flex align-items-center justify-content-center
+                                rounded-3 mb-3"
+                         style="width:72px;height:72px;background:rgba(255,255,255,0.15);">
+                        <i class="bi bi-folder2-open text-white" style="font-size:2rem;"></i>
+                    </div>
+                    <h3 class="text-white fw-bold mb-1">GestorDoc</h3>
+                    <p class="text-white-50 mb-0">Sistema Gestor Documental</p>
+                </div>
+
+                <!-- Card -->
+                <div class="card border-0 shadow-lg rounded-4 p-4">
+                    <div class="card-body p-0">
+                        <h5 class="fw-bold mb-1 text-center" style="color:#1A2332;">Bienvenido</h5>
+                        <p class="text-muted text-center mb-4" style="font-size:0.875rem;">
+                            Ingresa tus credenciales para continuar
+                        </p>
+
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger py-2">
+                            <i class="bi bi-exclamation-circle me-2"></i>{{ form.non_field_errors.0 }}
+                        </div>
+                        {% endif %}
+
+                        <form method="post" novalidate>
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold" style="font-size:0.875rem;">
+                                    <i class="bi bi-envelope me-1"></i>Correo electrónico
+                                </label>
+                                {{ form.username }}
+                                {% if form.username.errors %}
+                                <div class="text-danger" style="font-size:0.8rem;">{{ form.username.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold" style="font-size:0.875rem;">
+                                    <i class="bi bi-lock me-1"></i>Contraseña
+                                </label>
+                                <div class="input-group">
+                                    {{ form.password }}
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePass">
+                                        <i class="bi bi-eye" id="eyeIcon"></i>
+                                    </button>
+                                </div>
+                                {% if form.password.errors %}
+                                <div class="text-danger" style="font-size:0.8rem;">{{ form.password.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <p class="text-center text-white-50 mt-3" style="font-size:0.75rem;">
+                    © 2024 Sistema Gestor Documental
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('togglePass').addEventListener('click', function() {
+    const input = document.querySelector('input[name="password"]');
+    const icon = document.getElementById('eyeIcon');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'bi bi-eye-slash';
+    } else {
+        input.type = 'password';
+        icon.className = 'bi bi-eye';
+    }
+});
+</script>
+{% endblock %}

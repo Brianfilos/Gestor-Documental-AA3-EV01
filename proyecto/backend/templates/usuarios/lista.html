@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Usuarios - Gestor Documental{% endblock %}
+{% block page_title %}Gestión de Usuarios{% endblock %}
+
+{% block topbar_actions %}
+<a href="{% url 'usuario_create' %}" class="btn btn-primary btn-sm">
+    <i class="bi bi-person-plus me-1"></i>Nuevo Usuario
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="table-card">
+    <div class="d-flex align-items-center p-3 border-bottom">
+        <i class="bi bi-people me-2" style="color:#1565C0;font-size:1.2rem;"></i>
+        <h6 class="mb-0 fw-bold">Lista de Usuarios</h6>
+        <span class="badge ms-2" style="background:#EFF6FF;color:#1565C0;">{{ usuarios|length }}</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Rol</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                <tr>
+                    <td class="text-muted">{{ usuario.idUsuario }}</td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                                 style="width:32px;height:32px;background:#EFF6FF;min-width:32px;">
+                                <i class="bi bi-person-fill" style="color:#1565C0;"></i>
+                            </div>
+                            <span class="fw-semibold">{{ usuario.nombre }}</span>
+                        </div>
+                    </td>
+                    <td class="text-muted">{{ usuario.correo }}</td>
+                    <td>
+                        {% if usuario.idRol %}
+                        <span class="badge" style="background:#F5F3FF;color:#5B21B6;">{{ usuario.idRol.nombreRol }}</span>
+                        {% else %}
+                        <span class="text-muted">—</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="badge badge-{{ usuario.estado }}">
+                            {{ usuario.estado|capfirst }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="d-flex gap-1">
+                            <a href="{% url 'usuario_edit' usuario.pk %}" class="btn btn-sm btn-outline-primary" title="Editar">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'usuario_delete' usuario.pk %}" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-center text-muted py-4">No hay usuarios registrados.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

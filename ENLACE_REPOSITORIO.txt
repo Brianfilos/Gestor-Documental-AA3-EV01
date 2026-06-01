@@ -1,0 +1,39 @@
+============================================================
+ENLACE DEL REPOSITORIO - SISTEMA GESTOR DOCUMENTAL
+============================================================
+
+Evidencia : GA7-220501096-AA3-EV01
+            Codificación de módulos del software stand-alone, web y móvil
+
+Integrantes:
+  - Brian Alexander Filos Salazar
+  - Andrea Carolina Mora Rodríguez
+  - Leider Romero Peña
+
+------------------------------------------------------------
+REPOSITORIO GitHub (herramienta de versionamiento):
+https://github.com/Brianfilos/Gestor-Documental-AA3-EV01
+------------------------------------------------------------
+
+Para clonar el proyecto:
+    git clone https://github.com/Brianfilos/Gestor-Documental-AA3-EV01.git
+
+------------------------------------------------------------
+CONTENIDO DEL PROYECTO (3 módulos)
+------------------------------------------------------------
+
+1. MÓDULO STAND-ALONE  (Java + JDBC/MySQL)
+   Archivo: Gestordocumental.java
+   CRUD por consola de usuarios contra la base de datos.
+
+2. MÓDULO WEB  (Python - Framework Django + Django REST Framework)
+   Carpeta: proyecto/backend/
+   Gestión de documentos, usuarios y API REST.
+
+3. MÓDULO MÓVIL  (Android - Kotlin/Java + Retrofit)
+   Carpeta: proyecto/android/
+   Aplicación móvil que consume la API del backend.
+
+Base de datos: Sistema-Gestor-Documental.sql
+
+============================================================

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Historial - Gestor Documental{% endblock %}
+{% block page_title %}Historial de Actividad{% endblock %}
+
+{% block content %}
+<div class="table-card">
+    <div class="d-flex align-items-center p-3 border-bottom">
+        <i class="bi bi-clock-history me-2" style="color:#1565C0;font-size:1.2rem;"></i>
+        <h6 class="mb-0 fw-bold">Historial de Documentos</h6>
+        <span class="badge ms-2" style="background:#EFF6FF;color:#1565C0;">{{ historial|length }}</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Documento</th>
+                    <th>Acción</th>
+                    <th>Usuario</th>
+                    <th>Fecha y Hora</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for h in historial %}
+                <tr>
+                    <td class="text-muted">{{ h.idHistorial }}</td>
+                    <td>
+                        <a href="{% url 'documento_detail' h.idDocumento.pk %}" class="fw-semibold text-decoration-none">
+                            {{ h.idDocumento.titulo }}
+                        </a>
+                    </td>
+                    <td>
+                        <span class="badge" style="background:#EFF6FF;color:#1565C0;">{{ h.accion }}</span>
+                    </td>
+                    <td class="text-muted">{{ h.idUsuario.nombre }}</td>
+                    <td class="text-muted">{{ h.fechaAccion|date:"d/m/Y H:i" }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="text-center text-muted py-4">Sin historial de actividad.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block title %}Documentos - Gestor Documental{% endblock %}
+{% block page_title %}Documentos{% endblock %}
+
+{% block topbar_actions %}
+<a href="{% url 'documento_create' %}" class="btn btn-primary btn-sm">
+    <i class="bi bi-plus-lg me-1"></i>Nuevo Documento
+</a>
+{% endblock %}
+
+{% block content %}
+<!-- Filtros -->
+<div class="form-card mb-3">
+    <form method="get" class="row g-2 align-items-end">
+        <div class="col-sm-6 col-md-4">
+            <label class="form-label fw-semibold" style="font-size:0.8rem;">Buscar</label>
+            <div class="input-group input-group-sm">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input type="text" name="q" class="form-control" placeholder="Título o descripción..." value="{{ query }}">
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <label class="form-label fw-semibold" style="font-size:0.8rem;">Clasificación</label>
+            <select name="clasificacion" class="form-select form-select-sm">
+                <option value="">Todas</option>
+                {% for c in clasificaciones %}
+                <option value="{{ c.idClasificacion }}" {% if clasificacion_sel == c.idClasificacion|stringformat:"s" %}selected{% endif %}>
+                    {{ c.nombreClasificacion }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-sm-6 col-md-2">
+            <label class="form-label fw-semibold" style="font-size:0.8rem;">Estado</label>
+            <select name="estado" class="form-select form-select-sm">
+                <option value="">Todos</option>
+                <option value="activo" {% if estado_sel == 'activo' %}selected{% endif %}>Activo</option>
+                <option value="inactivo" {% if estado_sel == 'inactivo' %}selected{% endif %}>Inactivo</option>
+                <option value="revision" {% if estado_sel == 'revision' %}selected{% endif %}>En revisión</option>
+                <option value="archivado" {% if estado_sel == 'archivado' %}selected{% endif %}>Archivado</option>
+            </select>
+        </div>
+        <div class="col-sm-6 col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary btn-sm">
+                <i class="bi bi-funnel me-1"></i>Filtrar
+            </button>
+            <a href="{% url 'documento_list' %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-x-circle me-1"></i>Limpiar
+            </a>
+        </div>
+    </form>
+</div>
+
+<!-- Tabla -->
+<div class="table-card">
+    <div class="d-flex align-items-center p-3 border-bottom">
+        <i class="bi bi-file-earmark-text me-2" style="color:#1565C0;font-size:1.2rem;"></i>
+        <h6 class="mb-0 fw-bold">Lista de Documentos</h6>
+        <span class="badge ms-2" style="background:#EFF6FF;color:#1565C0;">{{ documentos|length }}</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Título</th>
+                    <th>Clasificación</th>
+                    <th>Estado</th>
+                    <th>Fecha Carga</th>
+                    <th>Usuario</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doc in documentos %}
+                <tr>
+                    <td class="text-muted">{{ doc.idDocumento }}</td>
+                    <td>
+                        <div class="fw-semibold">{{ doc.titulo }}</div>
+                        {% if doc.descripcion %}
+                        <small class="text-muted">{{ doc.descripcion|truncatechars:60 }}</small>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="badge" style="background:#EFF6FF;color:#1565C0;">
+                            {{ doc.idClasificacion.nombreClasificacion }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge badge-{{ doc.estado }}">{{ doc.get_estado_display }}</span>
+                    </td>
+                    <td class="text-muted">{{ doc.fechaCarga|date:"d/m/Y" }}</td>
+                    <td class="text-muted">{{ doc.idUsuario.nombre }}</td>
+                    <td>
+                        <div class="d-flex gap-1">
+                            <a href="{% url 'documento_detail' doc.pk %}" class="btn btn-sm btn-outline-secondary" title="Ver">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{% url 'documento_edit' doc.pk %}" class="btn btn-sm btn-outline-primary" title="Editar">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'documento_delete' doc.pk %}" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-5">
+                        <i class="bi bi-folder2-open d-block mb-2" style="font-size:2rem;"></i>
+                        No hay documentos que coincidan con los filtros.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

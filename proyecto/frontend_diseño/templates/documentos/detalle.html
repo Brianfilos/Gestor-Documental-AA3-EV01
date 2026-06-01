@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ documento.titulo }} — GestorDoc{% endblock %}
+
+{% block page_title %}<i class="bi bi-file-earmark-text me-2"></i> Detalle del Documento{% endblock %}
+
+{% block top_bar_actions %}
+  <a href="{% url 'documento_edit' documento.pk %}" class="btn btn-sm btn-warning">
+    <i class="bi bi-pencil"></i> Editar
+  </a>
+  <a href="{% url 'documento_delete' documento.pk %}" class="btn btn-sm btn-danger">
+    <i class="bi bi-trash"></i> Eliminar
+  </a>
+  <a href="{% url 'documento_list' %}" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left"></i> Volver
+  </a>
+{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+
+  <!-- Ficha principal del documento -->
+  <div class="col-lg-8">
+    <article class="card shadow-sm">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">{{ documento.titulo }}</h5>
+        <span class="badge badge-{{ documento.estado }}">{{ documento.estado }}</span>
+      </div>
+      <div class="card-body">
+
+        {% if documento.archivo %}
+          <a href="{{ documento.archivo.url }}" target="_blank" class="btn btn-success mb-3" download>
+            <i class="bi bi-download"></i> Descargar Archivo
+          </a>
+        {% endif %}
+
+        <dl class="row mt-3">
+          <dt class="col-sm-4">Clasificación:</dt>
+          <dd class="col-sm-8">{{ documento.idClasificacion.nombre }}</dd>
+
+          <dt class="col-sm-4">Fecha de Carga:</dt>
+          <dd class="col-sm-8">{{ documento.fechaCarga|date:"d/m/Y H:i" }}</dd>
+
+          <dt class="col-sm-4">Subido por:</dt>
+          <dd class="col-sm-8">
+            <i class="bi bi-person-circle me-1"></i>{{ documento.idUsuario.nombre }}
+          </dd>
+
+          <dt class="col-sm-4">Descripción:</dt>
+          <dd class="col-sm-8">{{ documento.descripcion|default:"Sin descripción." }}</dd>
+        </dl>
+      </div>
+    </article>
+
+    <!-- Formulario de revisión -->
+    <div class="card shadow-sm mt-4">
+      <div class="card-header">
+        <h6 class="mb-0"><i class="bi bi-chat-left-text me-2"></i>Agregar Revisión</h6>
+      </div>
+      <div class="card-body">
+        <form method="post" action="{% url 'revision_create' documento.pk %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <textarea name="comentario" class="form-control" rows="3"
+                      placeholder="Escriba su revisión o comentario..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-send"></i> Agregar Revisión
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Lista de revisiones -->
+    <div class="card shadow-sm mt-4">
+      <div class="card-header">
+        <h6 class="mb-0"><i class="bi bi-chat-square-dots me-2"></i>Revisiones ({{ revisiones|length }})</h6>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for rev in revisiones %}
+        <li class="list-group-item">
+          <div class="d-flex justify-content-between">
+            <strong><i class="bi bi-person-circle me-1"></i>{{ rev.idUsuario.nombre }}</strong>
+            <small class="text-muted">{{ rev.fechaRevision|date:"d/m/Y H:i" }}</small>
+          </div>
+          <p class="mb-0 mt-1">{{ rev.comentario }}</p>
+        </li>
+        {% empty %}
+        <li class="list-group-item text-center text-muted py-3">No hay revisiones aún.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Panel lateral: historial del documento -->
+  <div class="col-lg-4">
+    <aside class="card shadow-sm">
+      <div class="card-header">
+        <h6 class="mb-0"><i class="bi bi-clock-history me-2"></i>Historial del Documento</h6>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for registro in historial %}
+        <li class="list-group-item py-2">
+          <span class="badge bg-secondary mb-1">{{ registro.accion }}</span>
+          <div class="small text-muted">
+            <i class="bi bi-person-circle me-1"></i>{{ registro.idUsuario.nombre }}<br>
+            <i class="bi bi-calendar me-1"></i>{{ registro.fechaAccion|date:"d/m/Y H:i" }}
+          </div>
+        </li>
+        {% empty %}
+        <li class="list-group-item text-center text-muted py-3">Sin historial.</li>
+        {% endfor %}
+      </ul>
+    </aside>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,1552 @@
+================================================================================
+                    INSTITUCIÓN EDUCATIVA / EMPRESA DESARROLLADORA
+================================================================================
+
+              SISTEMA GESTOR DOCUMENTAL - ESTRUCTURA DE COMPONENTES WEB
+
+                         Documento de Especificación Frontend
+
+--------------------------------------------------------------------------------
+
+   Proyecto       : Sistema Gestor Documental
+   Tipo           : Documento de Especificación Técnica
+   Versión        : 1.0
+   Fecha          : 22 de marzo de 2026
+   Elaborado por  : Equipo de Desarrollo
+   Tecnología     : Django 4.2 + Bootstrap 5.3.2
+   Base de Datos  : MySQL
+
+================================================================================
+                                  CONTENIDO
+================================================================================
+
+   1. Portada ........................................................ [Pág. 1]
+   2. Introducción ................................................... [Pág. 2]
+   3. Objetivo General y Específicos ................................ [Pág. 3]
+   4. Definición de Elementos HTML a Utilizar ....................... [Pág. 4]
+   5. Estructura de Componentes Web ................................. [Pág. 5]
+      5.1 Plantilla Base (base.html)
+      5.2 Módulo de Autenticación (login.html)
+      5.3 Panel de Control (dashboard.html)
+      5.4 Módulo de Documentos
+          5.4.1 Lista de Documentos (lista.html)
+          5.4.2 Detalle del Documento (detalle.html)
+          5.4.3 Formulario de Documento (formulario.html)
+          5.4.4 Confirmación de Eliminación
+      5.5 Módulo de Clasificaciones
+      5.6 Módulo de Historial
+      5.7 Módulo de Usuarios
+   6. Mapa de Navegación entre Componentes .......................... [Pág. 6]
+   7. Paleta de Colores y Estilos Visuales .......................... [Pág. 7]
+
+================================================================================
+
+
+
+
+================================================================================
+                              PÁGINA 1 - PORTADA
+================================================================================
+
+
+                           ██████╗ ███████╗███████╗████████╗ ██████╗ ██████╗
+                          ██╔════╝ ██╔════╝██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗
+                          ██║  ███╗█████╗  ███████╗   ██║   ██║   ██║██████╔╝
+                          ██║   ██║██╔══╝  ╚════██║   ██║   ██║   ██║██╔══██╗
+                          ╚██████╔╝███████╗███████║   ██║   ╚██████╔╝██║  ██║
+                           ╚═════╝ ╚══════╝╚══════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝
+
+                              ██████╗  ██████╗  ██████╗
+                             ██╔══██╗██╔═══██╗██╔════╝
+                             ██║  ██║██║   ██║██║
+                             ██║  ██║██║   ██║██║
+                             ██████╔╝╚██████╔╝╚██████╗
+                             ╚═════╝  ╚═════╝  ╚═════╝
+
+
+              ================================================================
+              |                                                              |
+              |         SISTEMA GESTOR DOCUMENTAL                           |
+              |                                                              |
+              |   DOCUMENTO DE ESPECIFICACIÓN DE COMPONENTES WEB            |
+              |   (Estructura Frontend - Diseño de Interfaces)               |
+              |                                                              |
+              ================================================================
+
+
+   Descripción del Proyecto:
+   ─────────────────────────
+   El Sistema Gestor Documental es una aplicación web desarrollada con el
+   framework Django que permite la gestión integral de documentos digitales
+   dentro de una organización. Incluye funcionalidades de autenticación de
+   usuarios, gestión de roles y permisos, carga y administración de archivos,
+   clasificación documental, sistema de revisiones y un registro histórico
+   completo de todas las operaciones realizadas.
+
+   Tecnologías Frontend Utilizadas:
+   ─────────────────────────────────
+   • Lenguaje de marcado   : HTML5
+   • Estilos visuales      : CSS3 (personalizado) + Bootstrap 5.3.2
+   • Iconografía           : Bootstrap Icons 1.11.x
+   • Motor de plantillas   : Django Template Language (DTL)
+   • Interactividad        : JavaScript (vanilla, integrado en plantillas)
+
+   Módulos Principales del Sistema:
+   ─────────────────────────────────
+   • Autenticación y control de sesión
+   • Panel de control (Dashboard) con estadísticas
+   • Gestión de documentos (CRUD completo)
+   • Clasificación de documentos
+   • Historial de actividad
+   • Gestión de usuarios y roles
+   • API REST para integración con aplicación móvil Android
+
+
+================================================================================
+
+
+
+
+================================================================================
+                           PÁGINA 2 - INTRODUCCIÓN
+================================================================================
+
+   INTRODUCCIÓN
+   ════════════
+
+   En el contexto actual de la transformación digital, la gestión eficiente de
+   documentos se convierte en un pilar fundamental para el funcionamiento de
+   cualquier organización. Los procesos manuales de archivo y consulta de
+   documentos físicos presentan problemas de tiempo, seguridad y trazabilidad
+   que impactan negativamente la productividad institucional.
+
+   El presente documento especifica la arquitectura y estructura de componentes
+   de la interfaz web del Sistema Gestor Documental, una solución de software
+   desarrollada con Django 4.2 en el backend y Bootstrap 5 en el frontend.
+   Esta aplicación centraliza la gestión de documentos digitales, permitiendo
+   a los usuarios con diferentes roles (Administrador, Editor, Revisor,
+   Visualizador) interactuar con el sistema de forma segura y controlada.
+
+   La interfaz web está construida mediante el sistema de plantillas de Django
+   (Django Template Language), que permite la reutilización de componentes y
+   la separación clara entre la lógica de negocio y la presentación visual.
+   Todas las vistas están diseñadas con un enfoque "mobile-first" gracias a
+   Bootstrap 5, garantizando accesibilidad desde diferentes dispositivos.
+
+   La arquitectura de componentes sigue el patrón MVT (Modelo - Vista -
+   Plantilla) propio de Django:
+
+   • MODELO    : Define la estructura de datos en models.py (Documento,
+                 Usuario, Clasificación, Historial, Revisión).
+   • VISTA     : Contiene la lógica de procesamiento en views.py, devuelve
+                 los datos a las plantillas mediante contextos.
+   • PLANTILLA : Archivos HTML ubicados en la carpeta /templates/ que
+                 renderizan la interfaz de usuario.
+
+   Este documento se centra específicamente en la capa de PLANTILLAS (parte
+   web/frontend), describiendo cada componente HTML, su función dentro del
+   sistema, los elementos utilizados y el código principal de cada archivo.
+
+   El sistema cuenta con los siguientes archivos de plantilla organizados en
+   dos módulos principales:
+
+   ┌─────────────────────────────────────────────────────────────────────────┐
+   │  Módulo Usuarios              │  Módulo Documentos                     │
+   │  ─────────────────────────    │  ─────────────────────────────────      │
+   │  • templates/base.html        │  • templates/documentos/lista.html      │
+   │  • usuarios/login.html        │  • templates/documentos/detalle.html    │
+   │  • usuarios/dashboard.html    │  • templates/documentos/formulario.html │
+   │  • usuarios/lista.html        │  • templates/documentos/clasificac...   │
+   │  • usuarios/formulario.html   │  • templates/documentos/historial.html  │
+   │  • usuarios/confirmar_eli...  │  • templates/documentos/confirmar...    │
+   │                               │  • templates/documentos/clasif_form...  │
+   └─────────────────────────────────────────────────────────────────────────┘
+
+
+================================================================================
+
+
+
+
+================================================================================
+                      PÁGINA 3 - OBJETIVO GENERAL Y ESPECÍFICOS
+================================================================================
+
+   OBJETIVO GENERAL
+   ════════════════
+
+   Especificar y documentar la estructura de componentes web (frontend) del
+   Sistema Gestor Documental, describiendo cada elemento HTML, su función,
+   relación con los demás componentes y su implementación en código, con el
+   fin de servir como referencia técnica para el desarrollo, mantenimiento y
+   escalabilidad del sistema.
+
+   ────────────────────────────────────────────────────────────────────────────
+
+   OBJETIVOS ESPECÍFICOS
+   ═════════════════════
+
+   1. DOCUMENTAR cada plantilla HTML del sistema, indicando su propósito,
+      ubicación en el proyecto y los elementos HTML que la componen.
+
+   2. DESCRIBIR los elementos HTML5 semánticos y de Bootstrap 5 utilizados
+      en el diseño de cada módulo del sistema, explicando su función y
+      atributos principales.
+
+   3. IDENTIFICAR la plantilla base (base.html) como componente reutilizable
+      que centraliza el diseño general del sistema y las dependencias de
+      librerías externas (Bootstrap 5, Bootstrap Icons).
+
+   4. ESPECIFICAR los formularios HTML presentes en el sistema, incluyendo
+      los tipos de inputs, validaciones del lado del cliente y el manejo de
+      archivos (file upload para documentos).
+
+   5. PRESENTAR el mapa de navegación entre los diferentes componentes web,
+      mostrando cómo se interconectan las rutas URL con las plantillas.
+
+   6. ESTABLECER la paleta de colores, tipografía y estilos visuales que
+      definen la identidad gráfica del sistema.
+
+   7. SERVIR como referencia técnica para futuros desarrolladores que se
+      integren al proyecto, reduciendo la curva de aprendizaje.
+
+
+================================================================================
+
+
+
+
+================================================================================
+                    PÁGINA 4 - DEFINICIÓN DE ELEMENTOS HTML A UTILIZAR
+================================================================================
+
+   DEFINICIÓN DE ELEMENTOS HTML UTILIZADOS EN EL DISEÑO FRONTEND
+   ══════════════════════════════════════════════════════════════
+
+   A continuación se definen todos los elementos HTML5 utilizados en el diseño
+   de las interfaces del Sistema Gestor Documental, organizados por categoría:
+
+   ────────────────────────────────────────────────────────────────────────────
+   4.1 ELEMENTOS DE ESTRUCTURA Y SEMÁNTICA (HTML5)
+   ────────────────────────────────────────────────────────────────────────────
+
+   <!DOCTYPE html>
+   Declaración del tipo de documento. Indica al navegador que el documento
+   sigue el estándar HTML5. Presente en base.html como raíz de todas las
+   plantillas.
+   Uso en proyecto: Primera línea de base.html.
+
+   <html lang="es">
+   Elemento raíz del documento HTML. El atributo lang="es" indica al
+   navegador y tecnologías de asistencia que el contenido está en español,
+   mejorando la accesibilidad y el SEO.
+   Uso en proyecto: base.html - define el idioma de toda la aplicación.
+
+   <head>
+   Contenedor de metadatos del documento. No es visible para el usuario pero
+   contiene información esencial: charset, viewport, título, enlaces a CSS.
+   Uso en proyecto: base.html - incluye Bootstrap 5 y Bootstrap Icons.
+
+   <meta charset="UTF-8">
+   Define la codificación de caracteres del documento. UTF-8 soporta todos
+   los caracteres del español (tildes, ñ) y caracteres especiales.
+   Uso en proyecto: base.html - garantiza correcta visualización en español.
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   Configura el viewport para diseño responsivo. Sin este meta, las páginas
+   se verían como versiones de escritorio en móviles.
+   Uso en proyecto: base.html - habilita el diseño responsivo con Bootstrap.
+
+   <title>
+   Define el título del documento que aparece en la pestaña del navegador
+   y en los resultados de búsqueda.
+   Uso en proyecto: base.html con bloque DTL - {% block title %}GestorDoc{% endblock %}
+
+   <body>
+   Contenedor del contenido visible de la página. En el proyecto tiene la
+   clase "d-flex" de Bootstrap para el layout sidebar + contenido principal.
+   Uso en proyecto: base.html - estructura el layout general de la app.
+
+   <header>
+   Elemento semántico que representa la cabecera de la página o sección.
+   Uso en proyecto: base.html - contiene la barra superior con título y acciones.
+
+   <nav>
+   Elemento semántico para bloques de navegación principal. Contiene los
+   enlaces de menú del sistema.
+   Uso en proyecto: base.html - sidebar de navegación lateral.
+
+   <main>
+   Elemento semántico que representa el contenido principal del documento.
+   Solo debe haber uno por página.
+   Uso en proyecto: base.html - área donde se inserta el contenido de cada vista.
+
+   <section>
+   Elemento semántico genérico para agrupar contenido temáticamente
+   relacionado dentro de la página.
+   Uso en proyecto: dashboard.html - sección de estadísticas, sección de tabla.
+
+   <article>
+   Elemento semántico para contenido independiente y auto-contenido.
+   Uso en proyecto: detalle.html - ficha de documento, sección de revisiones.
+
+   <footer>
+   Elemento semántico para el pie del documento o sección.
+   Uso en proyecto: Incluido en base.html para información del sistema.
+
+   <aside>
+   Elemento semántico para contenido relacionado pero separado del principal.
+   Uso en proyecto: detalle.html - panel lateral del historial del documento.
+
+   ────────────────────────────────────────────────────────────────────────────
+   4.2 ELEMENTOS DE TEXTO Y CONTENIDO
+   ────────────────────────────────────────────────────────────────────────────
+
+   <h1> a <h6>
+   Encabezados de nivel 1 al 6 que definen la jerarquía del contenido.
+   Uso en proyecto:
+   • <h1>: Logo "GestorDoc" en el sidebar (base.html)
+   • <h5>: Título de tarjetas y modales
+   • <h6>: Subtítulos dentro de secciones
+
+   <p>
+   Párrafo de texto. Elemento de bloque básico para texto descriptivo.
+   Uso en proyecto: Descripción de documentos, mensajes de estado vacío,
+   textos informativos en el dashboard.
+
+   <span>
+   Elemento de línea genérico para agrupar texto en línea y aplicar estilos.
+   Uso en proyecto: Badges de estado (activo, inactivo, revisión, archivado),
+   iconos de Bootstrap Icons dentro de botones.
+
+   <strong>
+   Indica texto de gran importancia (renderizado en negrita). Semánticamente
+   diferente a <b> ya que implica relevancia.
+   Uso en proyecto: Labels de datos en la ficha del documento.
+
+   <small>
+   Representa texto de menor importancia, como notas al pie o comentarios.
+   Uso en proyecto: Fechas secundarias, información adicional de usuario.
+
+   <a>
+   Hipervínculo para navegar entre páginas o secciones del sistema.
+   Atributos principales: href (destino), class (estilos Bootstrap).
+   Uso en proyecto: Todos los enlaces de navegación del sidebar, botones de
+   acción en tablas (ver, editar), enlace de descarga de documentos.
+
+   ────────────────────────────────────────────────────────────────────────────
+   4.3 ELEMENTOS DE FORMULARIO
+   ────────────────────────────────────────────────────────────────────────────
+
+   <form>
+   Contenedor principal de un formulario HTML. Define el método de envío
+   (GET o POST) y la acción (URL destino).
+   Atributos clave:
+   • method="post"      : Envío seguro de datos (login, crear, editar)
+   • enctype="multipart/form-data" : Necesario para subir archivos (documentos)
+   • action=""          : Envía al mismo URL actual
+   Uso en proyecto:
+   • login.html       : Formulario de autenticación (método POST)
+   • formulario.html  : Crear/editar documento con carga de archivo
+   • usuarios/formulario.html : Crear/editar usuario
+   • detalle.html     : Formulario de revisión/comentario
+   • clasificacion_form.html : Crear/editar clasificación
+
+   {% csrf_token %}
+   Token de seguridad de Django (renderiza un <input type="hidden">) que
+   protege los formularios contra ataques CSRF (Cross-Site Request Forgery).
+   Uso en proyecto: Obligatorio en TODOS los formularios POST del sistema.
+
+   <input type="text">
+   Campo de texto de una línea para entrada de datos cortos.
+   Uso en proyecto:
+   • login.html      : Campo de correo electrónico (con type="email")
+   • formulario.html : Campo "Título del documento"
+   • lista.html      : Campo de búsqueda con placeholder="Buscar documentos..."
+
+   <input type="email">
+   Campo de texto especializado para direcciones de correo electrónico.
+   El navegador valida automáticamente el formato del email.
+   Uso en proyecto: login.html y usuarios/formulario.html para el correo.
+
+   <input type="password">
+   Campo de texto que oculta los caracteres escritos con asteriscos/puntos.
+   Uso en proyecto: login.html - contraseña de acceso al sistema.
+
+   <input type="file">
+   Permite al usuario seleccionar un archivo de su dispositivo para subirlo.
+   Atributo accept=".pdf,.doc,.docx,.xls,.xlsx" restringe tipos permitidos.
+   Uso en proyecto: formulario.html - carga del archivo del documento.
+
+   <input type="hidden">
+   Campo invisible para el usuario que transmite datos al servidor.
+   Uso en proyecto: csrf_token y campos de relación en formularios Django.
+
+   <input type="checkbox">
+   Casilla de verificación para opciones binarias (sí/no).
+   Uso en proyecto: Selector de estado activo/inactivo en formulario de usuario.
+
+   <textarea>
+   Campo de texto multilínea para texto extenso.
+   Atributos: rows (número de filas visibles), cols, placeholder.
+   Uso en proyecto:
+   • formulario.html : Campo "Descripción" del documento (rows="4")
+   • detalle.html    : Campo de comentario para revisiones (rows="3")
+   • clasificacion_form.html : Descripción de la clasificación
+
+   <select>
+   Lista desplegable para seleccionar una opción entre varias predefinidas.
+   Uso en proyecto:
+   • formulario.html : Selector de "Estado" del documento
+                       (activo / inactivo / revision / archivado)
+   • formulario.html : Selector de "Clasificación" del documento
+   • lista.html      : Filtros de búsqueda por estado y clasificación
+   • usuarios/formulario.html : Selector de "Rol" del usuario
+
+   <option>
+   Define una opción dentro de un elemento <select>.
+   Atributo value: valor enviado al servidor al seleccionar la opción.
+   Uso en proyecto: Dentro de todos los <select> del sistema.
+
+   <optgroup>
+   Agrupa opciones dentro de un <select> con una etiqueta descriptiva.
+   Uso en proyecto: Agrupación de estados en selectores de filtro.
+
+   <label>
+   Etiqueta descriptiva asociada a un control de formulario.
+   El atributo for debe coincidir con el id del input asociado.
+   Mejora la accesibilidad y la usabilidad (clic en label activa el input).
+   Uso en proyecto: Todas las etiquetas de campos en formularios del sistema.
+
+   <button>
+   Botón interactivo para ejecutar acciones dentro de un formulario o página.
+   Tipos: type="submit" (envía formulario), type="button" (acción JS),
+          type="reset" (limpia el formulario).
+   Uso en proyecto:
+   • Botón "Iniciar Sesión" en login
+   • Botón "Guardar" en formularios de creación/edición
+   • Botón "Eliminar" en páginas de confirmación
+   • Botón de toggle para mostrar/ocultar contraseña (login)
+   • Botón "Filtrar" y "Limpiar" en lista de documentos
+
+   <fieldset>
+   Agrupa visualmente controles de formulario relacionados.
+   Atributo disabled: desactiva todos los controles dentro del grupo.
+   Uso en proyecto: Agrupación de campos en formularios extensos.
+
+   <legend>
+   Título descriptivo para un elemento <fieldset>.
+   Uso en proyecto: Título de grupos de campos en formularios.
+
+   ────────────────────────────────────────────────────────────────────────────
+   4.4 ELEMENTOS DE TABLA
+   ────────────────────────────────────────────────────────────────────────────
+
+   <table>
+   Define una tabla de datos. En el proyecto se usa con clase Bootstrap
+   "table table-hover table-striped" para estilos modernos.
+   Uso en proyecto: lista.html (documentos), usuarios/lista.html (usuarios),
+   historial.html (registro de actividad), dashboard.html (documentos recientes).
+
+   <thead>
+   Agrupa las filas del encabezado de la tabla. Semánticamente separa
+   la cabecera del cuerpo y el pie de la tabla.
+   Uso en proyecto: Encabezados de todas las tablas del sistema.
+
+   <tbody>
+   Agrupa las filas de datos del cuerpo de la tabla.
+   Uso en proyecto: Contenido de todas las tablas del sistema.
+
+   <tr>
+   Define una fila (row) dentro de una tabla.
+   Uso en proyecto: Cada documento, usuario o registro de historial es una <tr>.
+
+   <th>
+   Define una celda de encabezado dentro de <thead>.
+   Atributo scope="col" mejora la accesibilidad de lectores de pantalla.
+   Uso en proyecto: ID, Título, Clasificación, Estado, Fecha, Acciones.
+
+   <td>
+   Define una celda de datos dentro de <tbody>.
+   Uso en proyecto: Valores de cada campo en cada fila de las tablas.
+
+   <caption>
+   Proporciona un título o descripción accesible para la tabla.
+   Uso en proyecto: No implementado actualmente (mejora futura recomendada).
+
+   ────────────────────────────────────────────────────────────────────────────
+   4.5 ELEMENTOS DE LISTA
+   ────────────────────────────────────────────────────────────────────────────
+
+   <ul>
+   Lista desordenada (sin numeración). Con Bootstrap: clase "list-unstyled"
+   elimina los puntos y el padding.
+   Uso en proyecto: Lista de enlaces del sidebar en base.html,
+   lista de revisiones en detalle.html.
+
+   <ol>
+   Lista ordenada (numerada).
+   Uso en proyecto: No usado directamente pero implementable en historial.
+
+   <li>
+   Elemento de lista, contenido de <ul> o <ol>.
+   Uso en proyecto: Cada enlace de navegación del sidebar, cada revisión.
+
+   <dl>
+   Lista de definiciones: términos y sus descripciones.
+   Uso en proyecto: Metadatos del documento en detalle.html
+   (etiqueta: valor como "Clasificación: Técnico").
+
+   <dt>
+   Término en una lista de definiciones.
+   Uso en proyecto: Labels de datos del documento (Clasificación, Estado, etc).
+
+   <dd>
+   Descripción del término en una lista de definiciones.
+   Uso en proyecto: Valores de los metadatos del documento.
+
+   ────────────────────────────────────────────────────────────────────────────
+   4.6 ELEMENTOS DE MEDIOS E INTEGRACIÓN
+   ────────────────────────────────────────────────────────────────────────────
+
+   <img>
+   Inserta una imagen en el documento.
+   Atributos: src (ruta), alt (texto alternativo accesible), width, height.
+   Uso en proyecto: Logo del sistema en sidebar, avatares de usuario con
+   iconos de Bootstrap Icons como imágenes de perfil SVG.
+
+   <i>
+   Elemento de texto en cursiva, reutilizado por Bootstrap Icons para
+   mostrar íconos vectoriales mediante clases CSS.
+   Uso en proyecto: Iconos en toda la aplicación:
+   • bi-file-earmark-text : Icono de documentos
+   • bi-people-fill       : Icono de usuarios
+   • bi-clock-history     : Icono de historial
+   • bi-grid-1x2-fill     : Icono de dashboard
+   • bi-tags-fill         : Icono de clasificaciones
+   • bi-eye               : Ver documento
+   • bi-pencil            : Editar
+   • bi-trash             : Eliminar
+   • bi-download          : Descargar archivo
+   • bi-plus-circle       : Agregar nuevo
+   • bi-box-arrow-right   : Cerrar sesión
+   • bi-person-circle     : Perfil de usuario
+
+   <iframe>
+   Embebe un documento HTML dentro del actual. No utilizado en este proyecto
+   pero relevante para futura previsualización de PDFs en el navegador.
+
+   ────────────────────────────────────────────────────────────────────────────
+   4.7 ELEMENTOS DE AGRUPACIÓN Y LAYOUT
+   ────────────────────────────────────────────────────────────────────────────
+
+   <div>
+   Elemento de bloque genérico para agrupar contenido y aplicar estilos.
+   Es el elemento más utilizado junto con las clases de Bootstrap 5 para
+   construir el layout del sistema.
+   Uso en proyecto (clases Bootstrap más frecuentes):
+   • div.container-fluid    : Contenedor a ancho completo
+   • div.row               : Fila del sistema de grilla Bootstrap
+   • div.col-md-4 col-lg-3 : Columnas responsivas (4 cols / 12 en pantalla MD)
+   • div.card              : Tarjeta con borde y sombra
+   • div.card-body         : Cuerpo interno de la tarjeta
+   • div.card-header       : Encabezado de la tarjeta
+   • div.alert             : Mensajes de alerta/notificación
+   • div.modal             : Ventana modal superpuesta
+   • div.d-flex            : Contenedor flex (flexbox)
+   • div.sidebar           : Barra lateral de navegación (custom)
+   • div.main-content      : Área de contenido principal (custom)
+
+   <span>
+   Elemento de línea genérico para agrupar texto en línea y aplicar estilos.
+   Uso en proyecto:
+   • Badges de estado: <span class="badge bg-success">Activo</span>
+   • Contadores numéricos en el dashboard
+   • Iconos inline dentro de botones
+
+   <hr>
+   Línea horizontal de separación temática.
+   Uso en proyecto: Separador entre secciones del sidebar y del formulario.
+
+   <br>
+   Salto de línea. Usado con moderación para separación visual.
+   Uso en proyecto: Espaciado entre elementos en páginas de confirmación.
+
+   ────────────────────────────────────────────────────────────────────────────
+   4.8 ELEMENTOS DE SCRIPTING Y RECURSOS EXTERNOS
+   ────────────────────────────────────────────────────────────────────────────
+
+   <script>
+   Incluye o define código JavaScript en el documento HTML.
+   Uso en proyecto:
+   • Inclusión de Bootstrap Bundle JS (con Popper.js incluido)
+   • Toggle de visibilidad de contraseña en login
+   • Auto-cierre de alertas después de 3 segundos
+   • Inicialización de tooltips de Bootstrap
+
+   <link>
+   Vincula recursos externos al documento HTML (principalmente CSS).
+   Uso en proyecto:
+   • Bootstrap 5.3.2 CSS (CDN)
+   • Bootstrap Icons CSS (CDN)
+   • Estilos personalizados inline en <style>
+
+   <style>
+   Bloque de CSS inline dentro del documento HTML.
+   Uso en proyecto: Estilos personalizados del sidebar, stat-cards, badges
+   de estado, responsive overrides, definidos en base.html.
+
+   ────────────────────────────────────────────────────────────────────────────
+   4.9 ATRIBUTOS HTML GLOBALES RELEVANTES
+   ────────────────────────────────────────────────────────────────────────────
+
+   id
+   Identificador único del elemento en el documento. Utilizado para:
+   • Anclas de navegación
+   • Asociación label-input (for=id)
+   • Selección desde JavaScript
+   • Targets de modales Bootstrap
+   Ejemplo: <input id="correo" name="correo" type="email">
+
+   class
+   Asigna una o más clases CSS al elemento. El uso de clases Bootstrap 5
+   elimina la necesidad de CSS personalizado extenso.
+   Ejemplo: <button class="btn btn-primary d-flex align-items-center gap-2">
+
+   name
+   Nombre del campo en formularios, usado como clave al enviar datos al server.
+   Ejemplo: <input name="titulo"> → request.POST["titulo"] en Django view.
+
+   placeholder
+   Texto de guía dentro de inputs de formulario cuando están vacíos.
+   Ejemplo: <input placeholder="Buscar por título o descripción...">
+
+   required
+   Atributo booleano que hace obligatorio un campo de formulario.
+   El navegador impide el envío si el campo está vacío.
+   Uso en proyecto: Campos obligatorios en todos los formularios.
+
+   disabled
+   Atributo booleano que desactiva un elemento de formulario.
+   Uso en proyecto: Botones durante carga, campos de solo lectura.
+
+   data-*
+   Atributos personalizados para almacenar datos en elementos HTML.
+   Uso en proyecto: data-bs-toggle="modal", data-bs-target="#confirmModal"
+   para activar modales de Bootstrap.
+
+   action
+   En <form>: URL a la que se envían los datos del formulario.
+   En el proyecto generalmente vacío (envía al mismo URL).
+
+   method
+   En <form>: Método HTTP de envío (GET para filtros, POST para escritura).
+
+   enctype
+   En <form>: Tipo de codificación. "multipart/form-data" requerido para
+   subir archivos.
+
+   href
+   En <a>: URL de destino del enlace.
+   Uso en proyecto: URLs de Django generadas con {% url 'nombre_url' %}.
+
+   target="_blank"
+   En <a>: Abre el enlace en una nueva pestaña/ventana.
+   Uso en proyecto: Enlace de descarga/visualización de documentos.
+
+   download
+   En <a>: Indica que el recurso debe descargarse en lugar de abrirse.
+   Uso en proyecto: Botón "Descargar" en la ficha del documento.
+
+   type
+   En <button>: Define el comportamiento (submit, button, reset).
+   En <input>: Define el tipo de campo (text, email, password, file, hidden).
+
+   value
+   En <input>/<option>: Valor enviado al servidor cuando el elemento
+   es seleccionado o enviado.
+
+
+================================================================================
+
+
+
+
+================================================================================
+                        PÁGINA 5 - ESTRUCTURA DE COMPONENTES WEB
+================================================================================
+
+   ESTRUCTURA DE COMPONENTES WEB
+   ══════════════════════════════
+
+   ────────────────────────────────────────────────────────────────────────────
+   5.1 PLANTILLA BASE - base.html
+   Ruta: templates/base.html
+   ────────────────────────────────────────────────────────────────────────────
+
+   DESCRIPCIÓN:
+   Plantilla maestra de la que heredan TODAS las demás plantillas del sistema
+   (excepto login.html). Implementa el layout general de la aplicación con
+   sidebar fijo + área de contenido principal. Define bloques DTL que las
+   plantillas hijas sobreescriben para insertar su contenido específico.
+
+   FUNCIÓN EN EL SISTEMA:
+   • Centraliza las dependencias de librerías (Bootstrap 5, Bootstrap Icons)
+   • Define el sidebar de navegación con todos los módulos del sistema
+   • Muestra la información del usuario autenticado (nombre, rol)
+   • Proporciona el sistema de alertas/mensajes de Django
+   • Define los bloques {% block %} que las plantillas hijas completan
+
+   ESTRUCTURA HTML PRINCIPAL:
+   ┌─────────────────────────────────────────────────────────────────────────┐
+   │  <body class="d-flex">                                                  │
+   │    <!-- SIDEBAR -->                                                     │
+   │    <nav class="sidebar">                                                │
+   │      <div class="sidebar-brand"> GestorDoc </div>                      │
+   │      <ul class="sidebar-nav">                                           │
+   │        <li class="nav-section-title"> PRINCIPAL </li>                  │
+   │        <li><a href="/dashboard/"> Dashboard </a></li>                  │
+   │        <li><a href="/documentos/"> Documentos </a></li>                │
+   │        <li><a href="/historial/"> Historial </a></li>                  │
+   │        <li class="nav-section-title"> CONFIGURACIÓN </li>              │
+   │        <li><a href="/clasificaciones/"> Clasificaciones </a></li>      │
+   │        <li><a href="/usuarios/"> Usuarios </a></li>                    │
+   │      </ul>                                                              │
+   │      <!-- Info usuario + botón logout -->                              │
+   │    </nav>                                                               │
+   │    <!-- CONTENIDO PRINCIPAL -->                                         │
+   │    <main class="main-content flex-grow-1">                             │
+   │      <header class="top-bar"> ... título página ... </header>          │
+   │      <div class="content-area">                                        │
+   │        {% block content %}{% endblock %}                               │
+   │      </div>                                                             │
+   │    </main>                                                              │
+   │  </body>                                                                │
+   └─────────────────────────────────────────────────────────────────────────┘
+
+   CÓDIGO PRINCIPAL:
+   -----------------
+   <!-- En base.html - Sistema de alertas de Django -->
+   {% if messages %}
+     {% for message in messages %}
+       <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+         {{ message }}
+         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+       </div>
+     {% endfor %}
+   {% endif %}
+
+   <!-- Bloque principal que las plantillas hijas completan -->
+   {% block content %}{% endblock %}
+
+   BLOQUES DTL DISPONIBLES:
+   • {% block title %}    : Título de la pestaña del navegador
+   • {% block content %}  : Contenido de la página
+   • {% block extra_css %}: CSS adicional específico de la vista
+   • {% block extra_js %} : JavaScript adicional específico de la vista
+
+   ────────────────────────────────────────────────────────────────────────────
+   5.2 MÓDULO DE AUTENTICACIÓN - login.html
+   Ruta: templates/usuarios/login.html
+   ────────────────────────────────────────────────────────────────────────────
+
+   DESCRIPCIÓN:
+   Página de inicio de sesión del sistema. Es la única plantilla que NO hereda
+   de base.html ya que tiene su propio diseño de pantalla completa con fondo
+   en gradiente. Implementa autenticación basada en correo electrónico.
+
+   FUNCIÓN EN EL SISTEMA:
+   • Punto de entrada al sistema para todos los usuarios
+   • Valida credenciales (correo + contraseña) contra la base de datos
+   • Redirige al dashboard tras autenticación exitosa
+   • Muestra errores de credenciales inválidas
+
+   ESTRUCTURA HTML PRINCIPAL:
+   ┌─────────────────────────────────────────────────────────────────────────┐
+   │  <body> <!-- Fondo gradiente azul pantalla completa -->                 │
+   │    <div class="login-container">                                        │
+   │      <div class="login-card">                                           │
+   │        <div class="login-brand"> GestorDoc </div>                      │
+   │        <form method="post">                                             │
+   │          {% csrf_token %}                                               │
+   │          <!-- Campo email -->                                           │
+   │          <input type="email" name="correo" required>                   │
+   │          <!-- Campo contraseña con toggle -->                           │
+   │          <div class="input-group">                                      │
+   │            <input type="password" id="password" name="contrasena">     │
+   │            <button type="button" id="togglePassword">                  │
+   │              <i class="bi bi-eye"></i>                                  │
+   │            </button>                                                    │
+   │          </div>                                                         │
+   │          <!-- Mensajes de error -->                                     │
+   │          {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %} │
+   │          <button type="submit" class="btn btn-primary w-100">          │
+   │            Iniciar Sesión                                               │
+   │          </button>                                                      │
+   │        </form>                                                          │
+   │      </div>                                                             │
+   │    </div>                                                               │
+   │  </body>                                                                │
+   └─────────────────────────────────────────────────────────────────────────┘
+
+   CÓDIGO PRINCIPAL:
+   -----------------
+   <!-- Toggle de visibilidad de contraseña -->
+   <script>
+     document.getElementById('togglePassword').addEventListener('click', function() {
+       const pwd = document.getElementById('password');
+       const icon = this.querySelector('i');
+       if (pwd.type === 'password') {
+         pwd.type = 'text';
+         icon.classList.replace('bi-eye', 'bi-eye-slash');
+       } else {
+         pwd.type = 'password';
+         icon.classList.replace('bi-eye-slash', 'bi-eye');
+       }
+     });
+   </script>
+
+   URL asociada    : /login/
+   Vista Django    : apps/usuarios/views.py → login_view()
+   Redirige a      : /dashboard/ (éxito) / /login/ con error (fallo)
+
+   ────────────────────────────────────────────────────────────────────────────
+   5.3 PANEL DE CONTROL - dashboard.html
+   Ruta: templates/usuarios/dashboard.html
+   ────────────────────────────────────────────────────────────────────────────
+
+   DESCRIPCIÓN:
+   Página principal del sistema tras autenticarse. Muestra un resumen del
+   estado actual del sistema mediante tarjetas de estadísticas (KPIs) y una
+   tabla de los documentos cargados más recientemente.
+
+   FUNCIÓN EN EL SISTEMA:
+   • Ofrece una vista panorámica del estado documental del sistema
+   • Muestra métricas: total documentos, documentos activos, usuarios, recientes
+   • Lista los últimos documentos cargados con acceso rápido
+
+   DATOS DEL CONTEXTO DJANGO (desde dashboard_view):
+   • total_docs        : Cantidad total de documentos en el sistema
+   • docs_activos      : Documentos con estado "activo"
+   • total_usuarios    : Total de usuarios registrados
+   • docs_recientes    : Documentos de los últimos 7 días (QuerySet)
+
+   ESTRUCTURA HTML PRINCIPAL:
+   ┌─────────────────────────────────────────────────────────────────────────┐
+   │  {% extends 'base.html' %}                                              │
+   │  {% block content %}                                                    │
+   │    <!-- Tarjetas de estadísticas -->                                    │
+   │    <div class="row g-4 mb-4">                                           │
+   │      <div class="col-md-3">                                             │
+   │        <div class="stat-card">                                          │
+   │          <i class="bi bi-file-earmark-text stat-icon"></i>             │
+   │          <div class="stat-value">{{ total_docs }}</div>                │
+   │          <div class="stat-label">Total Documentos</div>                │
+   │        </div>                                                           │
+   │      </div>                                                             │
+   │      ... (3 tarjetas más) ...                                           │
+   │    </div>                                                               │
+   │    <!-- Tabla documentos recientes -->                                  │
+   │    <div class="table-card">                                             │
+   │      <table class="table table-hover">                                  │
+   │        <thead><tr>                                                      │
+   │          <th>Título</th><th>Clasificación</th>                         │
+   │          <th>Estado</th><th>Fecha</th><th>Acciones</th>                │
+   │        </tr></thead>                                                    │
+   │        <tbody>                                                          │
+   │          {% for doc in docs_recientes %}                               │
+   │          <tr>                                                           │
+   │            <td>{{ doc.titulo }}</td>                                   │
+   │            <td>{{ doc.idClasificacion.nombre }}</td>                   │
+   │            <td><span class="badge ...">{{ doc.estado }}</span></td>    │
+   │            <td>{{ doc.fechaCarga|date:"d/m/Y" }}</td>                  │
+   │            <td><a href="{% url 'documento_detail' doc.pk %}">Ver</a></td> │
+   │          </tr>                                                          │
+   │          {% endfor %}                                                   │
+   │        </tbody>                                                         │
+   │      </table>                                                           │
+   │    </div>                                                               │
+   │  {% endblock %}                                                         │
+   └─────────────────────────────────────────────────────────────────────────┘
+
+   URL asociada : /dashboard/
+   Vista Django : apps/usuarios/views.py → dashboard_view()
+
+   ────────────────────────────────────────────────────────────────────────────
+   5.4.1 LISTA DE DOCUMENTOS - lista.html
+   Ruta: templates/documentos/lista.html
+   ────────────────────────────────────────────────────────────────────────────
+
+   DESCRIPCIÓN:
+   Vista principal del módulo de documentos. Muestra todos los documentos
+   del sistema con capacidad de búsqueda y filtrado por clasificación y estado.
+
+   FUNCIÓN EN EL SISTEMA:
+   • Listado completo de documentos con paginación
+   • Búsqueda por texto en título y descripción
+   • Filtro por clasificación documental
+   • Filtro por estado (activo, inactivo, revisión, archivado)
+   • Acceso a crear nuevo documento, ver detalle, editar y eliminar
+
+   DATOS DEL CONTEXTO DJANGO (desde documento_list):
+   • documentos      : QuerySet de documentos filtrados
+   • clasificaciones : Lista de clasificaciones para el select de filtro
+   • request.GET     : Parámetros de búsqueda actuales (q, clasificacion, estado)
+
+   CÓDIGO PRINCIPAL:
+   -----------------
+   <!-- Formulario de búsqueda y filtros -->
+   <form method="GET" action="">
+     <div class="row g-2">
+       <div class="col-md-4">
+         <input type="text" name="q" class="form-control"
+                placeholder="Buscar por título o descripción..."
+                value="{{ request.GET.q }}">
+       </div>
+       <div class="col-md-3">
+         <select name="clasificacion" class="form-select">
+           <option value="">Todas las clasificaciones</option>
+           {% for clf in clasificaciones %}
+             <option value="{{ clf.pk }}"
+               {% if request.GET.clasificacion == clf.pk|stringformat:"s" %}selected{% endif %}>
+               {{ clf.nombre }}
+             </option>
+           {% endfor %}
+         </select>
+       </div>
+       <div class="col-md-3">
+         <select name="estado" class="form-select">
+           <option value="">Todos los estados</option>
+           <option value="activo">Activo</option>
+           <option value="inactivo">Inactivo</option>
+           <option value="revision">En Revisión</option>
+           <option value="archivado">Archivado</option>
+         </select>
+       </div>
+       <div class="col-md-2 d-flex gap-2">
+         <button type="submit" class="btn btn-primary flex-grow-1">Filtrar</button>
+         <a href="{% url 'documento_list' %}" class="btn btn-outline-secondary">Limpiar</a>
+       </div>
+     </div>
+   </form>
+
+   <!-- Tabla de resultados con iteración DTL -->
+   {% for doc in documentos %}
+   <tr>
+     <td>{{ doc.idDocumento }}</td>
+     <td>{{ doc.titulo }}</td>
+     <td>{{ doc.idClasificacion.nombre }}</td>
+     <td><span class="badge badge-{{ doc.estado }}">{{ doc.estado }}</span></td>
+     <td>{{ doc.fechaCarga|date:"d/m/Y H:i" }}</td>
+     <td>{{ doc.idUsuario.nombre }}</td>
+     <td>
+       <a href="{% url 'documento_detail' doc.pk %}" class="btn btn-sm btn-info">
+         <i class="bi bi-eye"></i>
+       </a>
+       <a href="{% url 'documento_edit' doc.pk %}" class="btn btn-sm btn-warning">
+         <i class="bi bi-pencil"></i>
+       </a>
+       <a href="{% url 'documento_delete' doc.pk %}" class="btn btn-sm btn-danger">
+         <i class="bi bi-trash"></i>
+       </a>
+     </td>
+   </tr>
+   {% empty %}
+   <tr><td colspan="7" class="text-center text-muted">No se encontraron documentos</td></tr>
+   {% endfor %}
+
+   URL asociada : /documentos/
+   Vista Django : apps/documentos/views.py → documento_list()
+
+   ────────────────────────────────────────────────────────────────────────────
+   5.4.2 DETALLE DEL DOCUMENTO - detalle.html
+   Ruta: templates/documentos/detalle.html
+   ────────────────────────────────────────────────────────────────────────────
+
+   DESCRIPCIÓN:
+   Vista detallada de un documento específico. Muestra toda la información
+   del documento, permite descargar el archivo adjunto, ver y agregar
+   revisiones/comentarios, y consultar el historial de acciones.
+
+   FUNCIÓN EN EL SISTEMA:
+   • Visualización completa de metadatos del documento
+   • Descarga del archivo adjunto (PDF, Word, Excel, etc.)
+   • Sistema de revisiones con formulario de comentarios
+   • Timeline del historial de acciones del documento
+   • Botones de edición y eliminación del documento
+
+   DATOS DEL CONTEXTO DJANGO (desde documento_detail):
+   • documento   : Objeto Documento con todos sus campos
+   • revisiones  : QuerySet de RevisionDocumento del documento
+   • historial   : QuerySet de HistorialDocumento del documento
+   • form        : RevisionForm para agregar comentarios
+
+   CÓDIGO PRINCIPAL:
+   -----------------
+   <!-- Ficha principal del documento -->
+   <div class="card">
+     <div class="card-header d-flex justify-content-between align-items-center">
+       <h5>{{ documento.titulo }}</h5>
+       <span class="badge badge-{{ documento.estado }}">{{ documento.estado }}</span>
+     </div>
+     <div class="card-body">
+       <!-- Botón de descarga si hay archivo -->
+       {% if documento.archivo %}
+         <a href="{{ documento.archivo.url }}" target="_blank"
+            class="btn btn-success" download>
+           <i class="bi bi-download"></i> Descargar Archivo
+         </a>
+       {% endif %}
+       <dl class="row mt-3">
+         <dt class="col-sm-3">Clasificación:</dt>
+         <dd class="col-sm-9">{{ documento.idClasificacion.nombre }}</dd>
+         <dt class="col-sm-3">Fecha de Carga:</dt>
+         <dd class="col-sm-9">{{ documento.fechaCarga|date:"d/m/Y H:i" }}</dd>
+         <dt class="col-sm-3">Subido por:</dt>
+         <dd class="col-sm-9">{{ documento.idUsuario.nombre }}</dd>
+         <dt class="col-sm-3">Descripción:</dt>
+         <dd class="col-sm-9">{{ documento.descripcion }}</dd>
+       </dl>
+     </div>
+   </div>
+
+   <!-- Formulario de revisión -->
+   <form method="post" action="{% url 'revision_create' documento.pk %}">
+     {% csrf_token %}
+     <div class="mb-3">
+       <textarea name="comentario" class="form-control" rows="3"
+                 placeholder="Escriba su revisión o comentario..." required></textarea>
+     </div>
+     <button type="submit" class="btn btn-primary">
+       <i class="bi bi-send"></i> Agregar Revisión
+     </button>
+   </form>
+
+   URL asociada : /documentos/<id>/
+   Vista Django : apps/documentos/views.py → documento_detail()
+
+   ────────────────────────────────────────────────────────────────────────────
+   5.4.3 FORMULARIO DE DOCUMENTO - formulario.html
+   Ruta: templates/documentos/formulario.html
+   ────────────────────────────────────────────────────────────────────────────
+
+   DESCRIPCIÓN:
+   Formulario reutilizable para crear nuevos documentos o editar documentos
+   existentes. Incluye subida de archivos y selección de metadatos.
+
+   FUNCIÓN EN EL SISTEMA:
+   • Creación de nuevos documentos con archivo adjunto
+   • Edición de documentos existentes (mantiene o reemplaza archivo)
+   • Validación de campos obligatorios en el cliente
+
+   CÓDIGO PRINCIPAL:
+   -----------------
+   <form method="post" enctype="multipart/form-data" action="">
+     {% csrf_token %}
+     <div class="row">
+       <div class="col-md-8">
+         <!-- Título -->
+         <div class="mb-3">
+           <label for="{{ form.titulo.id_for_label }}" class="form-label">
+             Título del Documento *
+           </label>
+           {{ form.titulo }}
+         </div>
+         <!-- Descripción -->
+         <div class="mb-3">
+           <label for="{{ form.descripcion.id_for_label }}" class="form-label">
+             Descripción
+           </label>
+           {{ form.descripcion }}
+         </div>
+       </div>
+       <div class="col-md-4">
+         <!-- Clasificación -->
+         <div class="mb-3">
+           <label class="form-label">Clasificación *</label>
+           {{ form.idClasificacion }}
+         </div>
+         <!-- Estado -->
+         <div class="mb-3">
+           <label class="form-label">Estado</label>
+           {{ form.estado }}
+         </div>
+         <!-- Archivo -->
+         <div class="mb-3">
+           <label class="form-label">Archivo del Documento</label>
+           {{ form.archivo }}
+           <div class="form-text">Formatos: PDF, Word, Excel</div>
+         </div>
+       </div>
+     </div>
+     <div class="d-flex gap-2">
+       <button type="submit" class="btn btn-primary">
+         <i class="bi bi-floppy"></i> Guardar Documento
+       </button>
+       <a href="{% url 'documento_list' %}" class="btn btn-outline-secondary">
+         Cancelar
+       </a>
+     </div>
+   </form>
+
+   URLs asociadas:
+   • Crear : /documentos/crear/  → documento_create()
+   • Editar: /documentos/<id>/editar/ → documento_edit()
+
+   ────────────────────────────────────────────────────────────────────────────
+   5.4.4 CONFIRMACIÓN DE ELIMINACIÓN - confirmar_eliminar.html
+   Ruta: templates/documentos/confirmar_eliminar.html
+   ────────────────────────────────────────────────────────────────────────────
+
+   DESCRIPCIÓN:
+   Página de confirmación antes de eliminar permanentemente un documento.
+   Implementa el patrón "confirmar acción destructiva" para prevenir
+   eliminaciones accidentales.
+
+   CÓDIGO PRINCIPAL:
+   -----------------
+   <div class="card border-danger">
+     <div class="card-header bg-danger text-white">
+       <h5><i class="bi bi-exclamation-triangle"></i> Confirmar Eliminación</h5>
+     </div>
+     <div class="card-body">
+       <p>¿Está seguro que desea eliminar el documento:</p>
+       <p><strong>{{ documento.titulo }}</strong></p>
+       <p class="text-danger">Esta acción no se puede deshacer.</p>
+       <form method="post">
+         {% csrf_token %}
+         <button type="submit" class="btn btn-danger">
+           <i class="bi bi-trash"></i> Sí, Eliminar
+         </button>
+         <a href="{% url 'documento_list' %}" class="btn btn-outline-secondary">
+           Cancelar
+         </a>
+       </form>
+     </div>
+   </div>
+
+   URL asociada : /documentos/<id>/eliminar/
+   Vista Django : apps/documentos/views.py → documento_delete()
+
+   ────────────────────────────────────────────────────────────────────────────
+   5.5 MÓDULO DE CLASIFICACIONES
+   Ruta: templates/documentos/clasificaciones.html
+         templates/documentos/clasificacion_form.html
+   ────────────────────────────────────────────────────────────────────────────
+
+   DESCRIPCIÓN:
+   Módulo para administrar las categorías de clasificación de documentos.
+   Permite listar, crear y editar las clasificaciones disponibles en el sistema.
+
+   CLASIFICACIONES PREDEFINIDAS:
+   • Administrativo  • Técnico       • Legal
+   • Financiero      • Recursos Humanos  • Académico
+
+   CÓDIGO PRINCIPAL (clasificaciones.html):
+   -----------------------------------------
+   <table class="table table-hover">
+     <thead>
+       <tr>
+         <th>ID</th><th>Nombre</th><th>Descripción</th><th>Acciones</th>
+       </tr>
+     </thead>
+     <tbody>
+       {% for clf in clasificaciones %}
+       <tr>
+         <td>{{ clf.pk }}</td>
+         <td>{{ clf.nombre }}</td>
+         <td>{{ clf.descripcion }}</td>
+         <td>
+           <a href="{% url 'clasificacion_edit' clf.pk %}" class="btn btn-sm btn-warning">
+             <i class="bi bi-pencil"></i> Editar
+           </a>
+         </td>
+       </tr>
+       {% endfor %}
+     </tbody>
+   </table>
+
+   URLs asociadas:
+   • Lista  : /clasificaciones/           → clasificacion_list()
+   • Crear  : /clasificaciones/crear/     → clasificacion_create()
+   • Editar : /clasificaciones/<id>/editar/ → clasificacion_edit()
+
+   ────────────────────────────────────────────────────────────────────────────
+   5.6 MÓDULO DE HISTORIAL - historial.html
+   Ruta: templates/documentos/historial.html
+   ────────────────────────────────────────────────────────────────────────────
+
+   DESCRIPCIÓN:
+   Registro global de todas las acciones realizadas sobre documentos en el
+   sistema. Permite auditar quién hizo qué y cuándo sobre cada documento.
+   Es de solo lectura: no permite crear ni editar registros.
+
+   ACCIONES REGISTRADAS AUTOMÁTICAMENTE:
+   • "Documento creado"         → Al crear un documento
+   • "Documento editado"        → Al modificar un documento
+   • "Documento eliminado"      → Al borrar un documento
+   • "Revisión agregada"        → Al añadir un comentario de revisión
+
+   CÓDIGO PRINCIPAL:
+   -----------------
+   <table class="table table-hover table-striped">
+     <thead class="table-dark">
+       <tr>
+         <th>Fecha</th>
+         <th>Usuario</th>
+         <th>Documento</th>
+         <th>Acción</th>
+       </tr>
+     </thead>
+     <tbody>
+       {% for registro in historial %}
+       <tr>
+         <td>{{ registro.fechaAccion|date:"d/m/Y H:i" }}</td>
+         <td>
+           <i class="bi bi-person-circle"></i>
+           {{ registro.idUsuario.nombre }}
+         </td>
+         <td>{{ registro.idDocumento.titulo }}</td>
+         <td>
+           <span class="badge bg-secondary">{{ registro.accion }}</span>
+         </td>
+       </tr>
+       {% empty %}
+       <tr>
+         <td colspan="4" class="text-center text-muted">
+           No hay registros en el historial
+         </td>
+       </tr>
+       {% endfor %}
+     </tbody>
+   </table>
+
+   URL asociada : /historial/
+   Vista Django : apps/documentos/views.py → historial_list()
+
+   ────────────────────────────────────────────────────────────────────────────
+   5.7 MÓDULO DE USUARIOS
+   Ruta: templates/usuarios/lista.html
+         templates/usuarios/formulario.html
+         templates/usuarios/confirmar_eliminar.html
+   ────────────────────────────────────────────────────────────────────────────
+
+   DESCRIPCIÓN:
+   Módulo de administración de usuarios del sistema. Permite al administrador
+   gestionar las cuentas de usuarios, asignar roles y controlar el acceso.
+
+   ROLES DEL SISTEMA:
+   • Administrador   : Acceso completo a todos los módulos
+   • Editor          : Puede crear y editar documentos
+   • Revisor         : Puede revisar y comentar documentos
+   • Visualizador    : Solo puede consultar documentos
+
+   CÓDIGO PRINCIPAL (lista.html):
+   --------------------------------
+   <table class="table table-hover">
+     <thead>
+       <tr>
+         <th>ID</th><th>Nombre</th><th>Correo</th>
+         <th>Rol</th><th>Estado</th><th>Acciones</th>
+       </tr>
+     </thead>
+     <tbody>
+       {% for usuario in usuarios %}
+       <tr>
+         <td>{{ usuario.idUsuario }}</td>
+         <td>
+           <i class="bi bi-person-circle text-primary"></i>
+           {{ usuario.nombre }}
+         </td>
+         <td>{{ usuario.correo }}</td>
+         <td>
+           <span class="badge bg-info">
+             {{ usuario.idRol.nombre }}
+           </span>
+         </td>
+         <td>
+           {% if usuario.estado == 'activo' %}
+             <span class="badge bg-success">Activo</span>
+           {% else %}
+             <span class="badge bg-secondary">Inactivo</span>
+           {% endif %}
+         </td>
+         <td>
+           <a href="{% url 'usuario_edit' usuario.pk %}" class="btn btn-sm btn-warning">
+             <i class="bi bi-pencil"></i>
+           </a>
+           <a href="{% url 'usuario_delete' usuario.pk %}" class="btn btn-sm btn-danger">
+             <i class="bi bi-trash"></i>
+           </a>
+         </td>
+       </tr>
+       {% endfor %}
+     </tbody>
+   </table>
+
+   CÓDIGO PRINCIPAL (formulario.html):
+   -------------------------------------
+   <form method="post">
+     {% csrf_token %}
+     <div class="mb-3">
+       <label class="form-label">Nombre Completo *</label>
+       {{ form.nombre }}
+     </div>
+     <div class="mb-3">
+       <label class="form-label">Correo Electrónico *</label>
+       {{ form.correo }}
+     </div>
+     <div class="mb-3">
+       <label class="form-label">Contraseña *</label>
+       {{ form.contrasena }}
+     </div>
+     <div class="mb-3">
+       <label class="form-label">Rol *</label>
+       {{ form.idRol }}
+     </div>
+     <div class="mb-3">
+       <label class="form-label">Estado</label>
+       {{ form.estado }}
+     </div>
+     <button type="submit" class="btn btn-primary">Guardar Usuario</button>
+     <a href="{% url 'usuario_list' %}" class="btn btn-outline-secondary">Cancelar</a>
+   </form>
+
+   URLs asociadas:
+   • Lista   : /usuarios/              → usuario_list()
+   • Crear   : /usuarios/crear/        → usuario_create()
+   • Editar  : /usuarios/<id>/editar/  → usuario_edit()
+   • Eliminar: /usuarios/<id>/eliminar/ → usuario_delete()
+
+
+================================================================================
+
+
+
+
+================================================================================
+                       PÁGINA 6 - MAPA DE NAVEGACIÓN ENTRE COMPONENTES
+================================================================================
+
+   MAPA DE NAVEGACIÓN DEL SISTEMA
+   ═══════════════════════════════
+
+   El flujo de navegación del sistema sigue el siguiente esquema:
+
+   ┌──────────────────────────────────────────────────────────────────────────┐
+   │                          PUNTO DE ENTRADA                                │
+   │                                                                          │
+   │                    /login/ → login.html                                  │
+   │                         │                                                │
+   │                         │ POST correo + contraseña                       │
+   │                         │ (login exitoso)                                │
+   │                         ▼                                                │
+   │                   /dashboard/ → dashboard.html  ◄──── BASE DE TODAS ────┤
+   │                         │                              LAS VISTAS        │
+   └──────────────────────────────────────────────────────────────────────────┘
+
+   MÓDULO DOCUMENTOS (desde sidebar):
+   ────────────────────────────────────
+
+   /documentos/ (lista.html)
+       │
+       ├──► [Nuevo Documento] → /documentos/crear/ (formulario.html)
+       │                              │
+       │                              └──► POST → Guarda → Redirige a lista
+       │
+       ├──► [Ver: ojo] → /documentos/<id>/ (detalle.html)
+       │                      │
+       │                      ├──► [Descargar] → archivo media (nueva pestaña)
+       │                      ├──► [Agregar Revisión] → /documentos/<id>/revision/
+       │                      ├──► [Editar] → /documentos/<id>/editar/ (formulario.html)
+       │                      └──► [Eliminar] → /documentos/<id>/eliminar/ (confirmar)
+       │
+       ├──► [Editar: lápiz] → /documentos/<id>/editar/ (formulario.html)
+       │                              │
+       │                              └──► POST → Actualiza → Redirige a lista
+       │
+       └──► [Eliminar: basurero] → /documentos/<id>/eliminar/ (confirmar_eliminar.html)
+                                          │
+                                          └──► POST → Elimina → Redirige a lista
+
+   MÓDULO CLASIFICACIONES (desde sidebar):
+   ─────────────────────────────────────────
+
+   /clasificaciones/ (clasificaciones.html)
+       │
+       ├──► [Nueva Clasificación] → /clasificaciones/crear/ (clasificacion_form.html)
+       │                                   │
+       │                                   └──► POST → Guarda → Redirige a lista
+       │
+       └──► [Editar] → /clasificaciones/<id>/editar/ (clasificacion_form.html)
+                               │
+                               └──► POST → Actualiza → Redirige a lista
+
+   MÓDULO HISTORIAL (desde sidebar):
+   ───────────────────────────────────
+
+   /historial/ (historial.html)  [Solo lectura - No tiene acciones]
+
+   MÓDULO USUARIOS (desde sidebar):
+   ──────────────────────────────────
+
+   /usuarios/ (lista.html)
+       │
+       ├──► [Nuevo Usuario] → /usuarios/crear/ (formulario.html)
+       │                             │
+       │                             └──► POST → Guarda → Redirige a lista
+       │
+       ├──► [Editar: lápiz] → /usuarios/<id>/editar/ (formulario.html)
+       │                             │
+       │                             └──► POST → Actualiza → Redirige a lista
+       │
+       └──► [Eliminar: basurero] → /usuarios/<id>/eliminar/ (confirmar_eliminar.html)
+                                          │
+                                          └──► POST → Elimina → Redirige a lista
+
+   CIERRE DE SESIÓN (desde sidebar):
+   ───────────────────────────────────
+
+   /logout/ → Cierra sesión → Redirige a /login/
+
+
+================================================================================
+
+
+
+
+================================================================================
+                       PÁGINA 7 - PALETA DE COLORES Y ESTILOS VISUALES
+================================================================================
+
+   IDENTIDAD VISUAL DEL SISTEMA
+   ══════════════════════════════
+
+   ────────────────────────────────────────────────────────────────────────────
+   7.1 PALETA DE COLORES PRINCIPAL
+   ────────────────────────────────────────────────────────────────────────────
+
+   El sistema utiliza una paleta corporativa basada en tonos azules con
+   acento naranja, transmitiendo profesionalismo y confianza.
+
+   COLOR                  CÓDIGO HEX    USO EN EL SISTEMA
+   ─────────────────────────────────────────────────────────────────────────
+   Azul oscuro principal  #0D47A1       Cabecera del sidebar, gradientes
+   Azul primario          #1565C0       Color primario de la marca GestorDoc
+   Azul intermedio        #1976D2       Fondo del sidebar, hover items nav
+   Azul claro hover       #1E88E5       Efecto hover en items del sidebar
+   Naranja acento         #FF6F00       Elementos destacados, íconos activos
+   Blanco                 #FFFFFF       Texto sobre fondos azules, fondos cards
+   Gris claro             #F8F9FA       Fondo del área de contenido principal
+   Gris medio             #6C757D       Texto secundario, fechas, metadatos
+   ─────────────────────────────────────────────────────────────────────────
+
+   ────────────────────────────────────────────────────────────────────────────
+   7.2 COLORES DE ESTADO DE DOCUMENTOS (Badges)
+   ────────────────────────────────────────────────────────────────────────────
+
+   ESTADO         COLOR BADGE    CÓDIGO HEX    DESCRIPCIÓN
+   ─────────────────────────────────────────────────────────────────────────
+   activo         Verde          #198754       Documento disponible y vigente
+   inactivo       Gris           #6C757D       Documento desactivado
+   revision       Amarillo       #FFC107       Documento en proceso de revisión
+   archivado      Cian           #0DCAF0       Documento archivado / histórico
+   ─────────────────────────────────────────────────────────────────────────
+
+   ────────────────────────────────────────────────────────────────────────────
+   7.3 CLASES CSS PERSONALIZADAS DEL SISTEMA
+   ────────────────────────────────────────────────────────────────────────────
+
+   .sidebar
+   Barra lateral fija de 260px de ancho. Gradiente vertical de #0D47A1 a
+   #1976D2. Posición fixed en pantallas grandes, se colapsa en móviles.
+
+   .sidebar-brand
+   Contenedor del logo "GestorDoc" en el sidebar. Fondo ligeramente más
+   oscuro, tipografía grande y en negrita.
+
+   .sidebar-nav li a
+   Enlace de navegación del sidebar. Texto blanco, relleno interno cómodo,
+   esquinas redondeadas. En hover: fondo #1E88E5. Íconos con margen derecho.
+
+   .nav-section-title
+   Etiqueta de sección dentro del sidebar (ej: "PRINCIPAL", "CONFIGURACIÓN").
+   Texto en mayúsculas, tamaño pequeño, color semitransparente.
+
+   .main-content
+   Área de contenido principal. Ocupa el espacio restante (flex-grow-1).
+   Fondo gris claro #F8F9FA. Scroll independiente del sidebar.
+
+   .top-bar
+   Barra superior fija dentro del main-content. Fondo blanco, sombra suave.
+   Contiene el título de la página y botones de acción principales.
+
+   .stat-card
+   Tarjeta de estadística del dashboard. Fondo blanco, borde izquierdo
+   coloreado (4px solid), sombra suave, icono grande, valor numérico prominente.
+
+   .table-card
+   Contenedor de tablas de datos. Fondo blanco, borde redondeado, sombra
+   suave, header con fondo gris claro y texto en negrita.
+
+   .badge-activo     → background: #198754 (verde Bootstrap success)
+   .badge-inactivo   → background: #6C757D (gris Bootstrap secondary)
+   .badge-revision   → background: #FFC107 (amarillo Bootstrap warning)
+   .badge-archivado  → background: #0DCAF0 (cian Bootstrap info)
+
+   ────────────────────────────────────────────────────────────────────────────
+   7.4 TIPOGRAFÍA
+   ────────────────────────────────────────────────────────────────────────────
+
+   Fuente principal  : Sistema (system-ui, -apple-system, sans-serif)
+                       Bootstrap 5 usa la fuente nativa del sistema operativo
+                       garantizando máxima legibilidad y rendimiento.
+
+   Tamaños utilizados:
+   • Títulos de página    : 1.25rem (h5 Bootstrap)
+   • Texto del sidebar    : 0.9rem
+   • Etiquetas de sección : 0.7rem (uppercase, semitransparente)
+   • Valores estadísticas : 2rem (font-weight: 700)
+   • Texto de tablas      : 0.875rem (table-sm Bootstrap)
+   • Badges de estado     : 0.75rem
+
+   ────────────────────────────────────────────────────────────────────────────
+   7.5 SISTEMA DE GRILLA (Bootstrap 5 Grid)
+   ────────────────────────────────────────────────────────────────────────────
+
+   El sistema utiliza la grilla de 12 columnas de Bootstrap 5 con los
+   siguientes breakpoints:
+
+   BREAKPOINT    PREFIJO    ANCHO MÍNIMO    USO EN EL SISTEMA
+   ─────────────────────────────────────────────────────────────────────────
+   Extra Small   (ninguno)  < 576px         Móviles: columnas apiladas
+   Small         sm         ≥ 576px         Tablets pequeñas
+   Medium        md         ≥ 768px         Tablets: formularios 2 columnas
+   Large         lg         ≥ 992px         Escritorio: layout completo
+   Extra Large   xl         ≥ 1200px        Pantallas grandes
+   ─────────────────────────────────────────────────────────────────────────
+
+   Distribuciones de columna más usadas en el proyecto:
+   • col-md-3  : Tarjetas de estadísticas en dashboard (4 por fila en MD+)
+   • col-md-4  : Campo de búsqueda en filtros de lista de documentos
+   • col-md-8  : Área principal del formulario de documento
+   • col-md-4  : Sidebar del formulario (clasificación, estado, archivo)
+
+
+================================================================================
+                              FIN DEL DOCUMENTO
+================================================================================
+
+   Documento elaborado para el proyecto:
+   Sistema Gestor Documental - Versión 1.0
+   Fecha: 22 de marzo de 2026
+
+   Tecnologías documentadas:
+   • Django 4.2.9 (Framework Backend + Motor de Plantillas)
+   • Bootstrap 5.3.2 (Framework CSS Frontend)
+   • Bootstrap Icons 1.11.x (Librería de Iconografía)
+   • HTML5 / CSS3 / JavaScript (Tecnologías Web Estándar)
+   • MySQL 8.x (Base de Datos)
+   • Python 3.x (Lenguaje de Programación)
+
+================================================================================

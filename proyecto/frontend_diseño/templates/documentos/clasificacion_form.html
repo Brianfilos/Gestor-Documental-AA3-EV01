@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if clasificacion %}Editar{% else %}Nueva{% endif %} Clasificación — GestorDoc{% endblock %}
+
+{% block page_title %}
+  <i class="bi bi-tag me-2"></i>
+  {% if clasificacion %}Editar Clasificación{% else %}Nueva Clasificación{% endif %}
+{% endblock %}
+
+{% block top_bar_actions %}
+  <a href="{% url 'clasificacion_list' %}" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left"></i> Volver
+  </a>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header">
+        <h6 class="mb-0">
+          <i class="bi bi-tags me-2"></i>
+          {% if clasificacion %}Editar Clasificación{% else %}Crear Nueva Clasificación{% endif %}
+        </h6>
+      </div>
+      <div class="card-body">
+        <form method="post" action="">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label for="{{ form.nombre.id_for_label }}" class="form-label fw-medium">
+              Nombre <span class="text-danger">*</span>
+            </label>
+            {{ form.nombre }}
+            {% if form.nombre.errors %}
+              <div class="text-danger small mt-1">{{ form.nombre.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="mb-4">
+            <label for="{{ form.descripcion.id_for_label }}" class="form-label fw-medium">
+              Descripción
+            </label>
+            {{ form.descripcion }}
+            {% if form.descripcion.errors %}
+              <div class="text-danger small mt-1">{{ form.descripcion.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-floppy"></i> Guardar Clasificación
+            </button>
+            <a href="{% url 'clasificacion_list' %}" class="btn btn-outline-secondary">
+              Cancelar
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

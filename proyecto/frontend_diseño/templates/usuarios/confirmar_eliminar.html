@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Usuario — GestorDoc{% endblock %}
+
+{% block page_title %}<i class="bi bi-person-x me-2"></i> Eliminar Usuario{% endblock %}
+
+{% block top_bar_actions %}
+  <a href="{% url 'usuario_list' %}" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left"></i> Volver
+  </a>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card border-danger shadow-sm">
+      <div class="card-header bg-danger text-white">
+        <h5 class="mb-0">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i> Confirmar Eliminación
+        </h5>
+      </div>
+      <div class="card-body text-center py-4">
+        <i class="bi bi-person-x text-danger" style="font-size: 3rem;"></i>
+        <p class="mt-3">¿Está seguro que desea eliminar al usuario:</p>
+        <p><strong class="fs-5">{{ usuario.nombre }}</strong></p>
+        <p class="text-muted small">{{ usuario.correo }}</p>
+        <p class="text-danger small">
+          <i class="bi bi-exclamation-circle"></i> Esta acción no se puede deshacer.
+        </p>
+
+        <form method="post" class="d-flex justify-content-center gap-3 mt-3">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger px-4">
+            <i class="bi bi-trash"></i> Sí, Eliminar
+          </button>
+          <a href="{% url 'usuario_list' %}" class="btn btn-outline-secondary px-4">
+            Cancelar
+          </a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

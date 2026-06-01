@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gestor Documental</string>
+    <string name="nav_open">Abrir menú</string>
+    <string name="nav_close">Cerrar menú</string>
+    <string name="login_title">Bienvenido</string>
+    <string name="login_subtitle">Sistema Gestor Documental</string>
+    <string name="btn_login">Iniciar Sesión</string>
+    <string name="hint_correo">correo@ejemplo.com</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_documentos">Documentos</string>
+    <string name="nav_historial">Historial</string>
+    <string name="nav_usuarios">Usuarios</string>
+    <string name="nav_logout">Cerrar Sesión</string>
+    <string name="empty_list">No hay elementos para mostrar</string>
+    <string name="error_conexion">Error de conexión con el servidor</string>
+
+    <string-array name="estados_documento">
+        <item>Activo</item>
+        <item>Inactivo</item>
+        <item>En revisión</item>
+        <item>Archivado</item>
+    </string-array>
+</resources>

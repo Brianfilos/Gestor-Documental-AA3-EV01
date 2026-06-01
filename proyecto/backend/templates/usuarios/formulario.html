@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}{{ accion }} Usuario - Gestor Documental{% endblock %}
+{% block page_title %}{{ accion }} Usuario{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="form-card">
+            <h6 class="fw-bold mb-4 pb-2 border-bottom">
+                <i class="bi bi-person me-2" style="color:#1565C0;"></i>{{ accion }} Usuario
+            </h6>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" style="font-size:0.875rem;">
+                        {{ field.label }}{% if field.field.required %} <span class="text-danger">*</span>{% endif %}
+                    </label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <div class="text-danger" style="font-size:0.8rem;">{{ field.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check2 me-1"></i>{{ accion }}
+                    </button>
+                    <a href="{% url 'usuario_list' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-x me-1"></i>Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

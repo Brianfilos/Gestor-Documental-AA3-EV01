@@ -1,0 +1,28 @@
+# Entorno virtual Python
+venv/
+env/
+.env
+__pycache__/
+*.pyc
+*.pyo
+
+# Archivos comprimidos duplicados
+*.zip
+
+# Android - archivos generados por el build
+proyecto/android/app/build/
+proyecto/android/build/
+proyecto/android/.gradle/
+proyecto/android/local.properties
+*.apk
+*.aab
+*.dex
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.iml

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block title %}{{ documento.titulo }} - Gestor Documental{% endblock %}
+{% block page_title %}Detalle de Documento{% endblock %}
+
+{% block topbar_actions %}
+<a href="{% url 'documento_edit' documento.pk %}" class="btn btn-outline-primary btn-sm me-1">
+    <i class="bi bi-pencil me-1"></i>Editar
+</a>
+<a href="{% url 'documento_list' %}" class="btn btn-outline-secondary btn-sm">
+    <i class="bi bi-arrow-left me-1"></i>Volver
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+    <!-- Información del documento -->
+    <div class="col-lg-8">
+        <div class="form-card mb-3">
+            <div class="d-flex align-items-start justify-content-between mb-3">
+                <div>
+                    <h5 class="fw-bold mb-1">{{ documento.titulo }}</h5>
+                    <span class="badge badge-{{ documento.estado }} me-2">{{ documento.get_estado_display }}</span>
+                    <span class="badge" style="background:#EFF6FF;color:#1565C0;">
+                        {{ documento.idClasificacion.nombreClasificacion }}
+                    </span>
+                </div>
+                {% if documento.archivo %}
+                <a href="{{ documento.archivo.url }}" class="btn btn-sm btn-success" download>
+                    <i class="bi bi-download me-1"></i>Descargar
+                </a>
+                {% endif %}
+            </div>
+            {% if documento.descripcion %}
+            <p class="text-muted mb-3">{{ documento.descripcion }}</p>
+            {% endif %}
+            <div class="row g-2">
+                <div class="col-sm-6">
+                    <small class="text-muted d-block">Fecha de carga</small>
+                    <span class="fw-semibold">{{ documento.fechaCarga|date:"d/m/Y" }}</span>
+                </div>
+                <div class="col-sm-6">
+                    <small class="text-muted d-block">Cargado por</small>
+                    <span class="fw-semibold">{{ documento.idUsuario.nombre }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Revisiones -->
+        <div class="form-card">
+            <h6 class="fw-bold mb-3 pb-2 border-bottom">
+                <i class="bi bi-chat-text me-2" style="color:#1565C0;"></i>Revisiones
+                <span class="badge ms-1" style="background:#EFF6FF;color:#1565C0;">{{ revisiones|length }}</span>
+            </h6>
+            {% for revision in revisiones %}
+            <div class="d-flex gap-3 mb-3 pb-3 border-bottom">
+                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                     style="width:36px;height:36px;background:#EFF6FF;">
+                    <i class="bi bi-person-fill" style="color:#1565C0;"></i>
+                </div>
+                <div>
+                    <div class="fw-semibold" style="font-size:0.875rem;">{{ revision.idUsuario.nombre }}</div>
+                    <div class="text-muted" style="font-size:0.8rem;">{{ revision.fechaRevision|date:"d/m/Y" }}</div>
+                    {% if revision.comentario %}
+                    <p class="mb-0 mt-1" style="font-size:0.875rem;">{{ revision.comentario }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted text-center py-3">Sin revisiones aún.</p>
+            {% endfor %}
+
+            <!-- Agregar revisión -->
+            <div class="mt-3 pt-3 border-top">
+                <h6 class="fw-semibold mb-2" style="font-size:0.875rem;">Agregar revisión</h6>
+                <form method="post" action="{% url 'revision_create' documento.pk %}">
+                    {% csrf_token %}
+                    {{ form_revision.comentario }}
+                    <button type="submit" class="btn btn-primary btn-sm mt-2">
+                        <i class="bi bi-send me-1"></i>Enviar revisión
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Historial -->
+    <div class="col-lg-4">
+        <div class="form-card">
+            <h6 class="fw-bold mb-3 pb-2 border-bottom">
+                <i class="bi bi-clock-history me-2" style="color:#1565C0;"></i>Historial
+            </h6>
+            <div style="max-height:400px;overflow-y:auto;">
+                {% for h in historial %}
+                <div class="d-flex gap-2 mb-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width:8px;height:8px;background:#1565C0;margin-top:6px;"></div>
+                    <div>
+                        <div style="font-size:0.8rem;font-weight:600;">{{ h.accion }}</div>
+                        <div class="text-muted" style="font-size:0.75rem;">
+                            {{ h.idUsuario.nombre }} · {{ h.fechaAccion|date:"d/m/Y H:i" }}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-muted text-center py-3" style="font-size:0.875rem;">Sin historial.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

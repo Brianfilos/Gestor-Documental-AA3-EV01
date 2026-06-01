@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard - Gestor Documental{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block topbar_actions %}
+<a href="{% url 'documento_create' %}" class="btn btn-primary btn-sm">
+    <i class="bi bi-plus-lg me-1"></i>Nuevo Documento
+</a>
+{% endblock %}
+
+{% block content %}
+<!-- Stats -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="stat-icon" style="background:#EFF6FF;">
+                    <i class="bi bi-file-earmark-text" style="color:#1565C0;"></i>
+                </div>
+                <span class="badge rounded-pill" style="background:#EFF6FF;color:#1565C0;font-size:0.7rem;">Total</span>
+            </div>
+            <div class="stat-value">{{ total_docs }}</div>
+            <div class="stat-label">Documentos registrados</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="stat-icon" style="background:#F0FDF4;">
+                    <i class="bi bi-check-circle" style="color:#166534;"></i>
+                </div>
+                <span class="badge rounded-pill" style="background:#F0FDF4;color:#166534;font-size:0.7rem;">Activos</span>
+            </div>
+            <div class="stat-value">{{ docs_activos }}</div>
+            <div class="stat-label">Documentos activos</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="stat-icon" style="background:#FFF7ED;">
+                    <i class="bi bi-people" style="color:#92400E;"></i>
+                </div>
+                <span class="badge rounded-pill" style="background:#FFF7ED;color:#92400E;font-size:0.7rem;">Usuarios</span>
+            </div>
+            <div class="stat-value">{{ total_usuarios }}</div>
+            <div class="stat-label">Usuarios registrados</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="stat-icon" style="background:#F5F3FF;">
+                    <i class="bi bi-clock-history" style="color:#5B21B6;"></i>
+                </div>
+                <span class="badge rounded-pill" style="background:#F5F3FF;color:#5B21B6;font-size:0.7rem;">Actividad</span>
+            </div>
+            <div class="stat-value">{{ docs_recientes|length }}</div>
+            <div class="stat-label">Recientes esta semana</div>
+        </div>
+    </div>
+</div>
+
+<!-- Documentos recientes -->
+<div class="table-card">
+    <div class="d-flex align-items-center justify-content-between p-3 border-bottom">
+        <h6 class="mb-0 fw-bold">
+            <i class="bi bi-clock me-2" style="color:#1565C0;"></i>Documentos Recientes
+        </h6>
+        <a href="{% url 'documento_list' %}" class="btn btn-sm btn-outline-primary">
+            Ver todos <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+    </div>
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Clasificación</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
+                    <th>Usuario</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doc in docs_recientes %}
+                <tr>
+                    <td>
+                        <div class="fw-semibold">{{ doc.titulo }}</div>
+                        {% if doc.descripcion %}
+                        <small class="text-muted">{{ doc.descripcion|truncatechars:50 }}</small>
+                        {% endif %}
+                    </td>
+                    <td><span class="badge" style="background:#EFF6FF;color:#1565C0;">{{ doc.idClasificacion.nombreClasificacion }}</span></td>
+                    <td>
+                        <span class="badge badge-{{ doc.estado }}">{{ doc.get_estado_display }}</span>
+                    </td>
+                    <td class="text-muted">{{ doc.fechaCarga|date:"d/m/Y" }}</td>
+                    <td class="text-muted">{{ doc.idUsuario.nombre }}</td>
+                    <td>
+                        <a href="{% url 'documento_detail' doc.pk %}" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-center text-muted py-4">No hay documentos registrados aún.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

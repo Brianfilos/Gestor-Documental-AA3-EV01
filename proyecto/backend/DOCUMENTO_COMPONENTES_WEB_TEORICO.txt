@@ -1,0 +1,720 @@
+================================================================================
+                    INSTITUCIÓN EDUCATIVA / EMPRESA DESARROLLADORA
+================================================================================
+
+
+
+
+                         SISTEMA GESTOR DOCUMENTAL
+
+
+
+
+              ESPECIFICACIÓN DE COMPONENTES WEB Y ELEMENTOS HTML
+                     PARA EL DISEÑO DE LA INTERFAZ FRONTEND
+
+
+
+
+--------------------------------------------------------------------------------
+
+   Proyecto       : Sistema Gestor Documental
+   Tipo de doc.   : Documento Técnico - Especificación de Componentes Frontend
+   Versión        : 1.0
+   Fecha          : 22 de marzo de 2026
+   Elaborado por  : Equipo de Desarrollo
+
+================================================================================
+
+
+
+
+================================================================================
+                              TABLA DE CONTENIDO
+================================================================================
+
+   1. Portada
+   2. Introducción
+   3. Objetivo General
+   4. Objetivos Específicos
+   5. Definición de Elementos HTML a Utilizar en el Diseño Frontend
+      5.1 Elementos de Estructura y Semántica
+      5.2 Elementos de Formulario
+      5.3 Elementos de Tabla
+      5.4 Elementos de Lista
+      5.5 Elementos de Texto y Contenido
+      5.6 Elementos de Agrupación y Layout
+   6. Estructura de Componentes del Sistema
+      6.1 Componente de Autenticación
+      6.2 Componente de Panel de Control (Dashboard)
+      6.3 Componente de Gestión de Documentos
+      6.4 Componente de Clasificaciones
+      6.5 Componente de Historial de Actividad
+      6.6 Componente de Gestión de Usuarios
+   7. Tecnologías y Librerías Frontend
+   8. Conclusiones
+
+================================================================================
+
+
+
+
+================================================================================
+                              INTRODUCCIÓN
+================================================================================
+
+   Hoy en día, las organizaciones generan grandes volúmenes de información
+   documental que necesitan ser gestionados de manera eficiente, ordenada y
+   segura. La falta de un sistema centralizado para el manejo de documentos
+   genera pérdidas de tiempo, riesgos de pérdida de información y dificultad
+   en el control de versiones y accesos.
+
+   El Sistema Gestor Documental surge como respuesta a esta necesidad, siendo
+   una aplicación web que centraliza la creación, almacenamiento, clasificación
+   y seguimiento de documentos digitales dentro de una organización. El sistema
+   contempla diferentes tipos de usuarios con distintos niveles de acceso,
+   un flujo de revisión y aprobación de documentos, y un registro histórico
+   completo de todas las operaciones realizadas.
+
+   El presente documento se enfoca en la especificación del frontend del
+   sistema, es decir, la capa de presentación con la que los usuarios
+   interactúan directamente a través del navegador web. Se identifican y
+   definen los elementos HTML que se emplearán en la construcción de cada
+   módulo, justificando su uso y describiendo la función que cumplirán dentro
+   de la interfaz.
+
+   La construcción de la interfaz web se basa en el motor de plantillas de
+   Django, que permite separar la lógica de negocio de la presentación visual.
+   Los estilos y la respuesta visual se apoyan en el framework Bootstrap 5,
+   garantizando un diseño moderno, limpio y adaptable a diferentes tamaños
+   de pantalla (responsivo).
+
+================================================================================
+
+
+
+
+================================================================================
+                              OBJETIVO GENERAL
+================================================================================
+
+   Especificar los componentes web y los elementos HTML que se utilizarán
+   en el diseño de la interfaz frontend del Sistema Gestor Documental,
+   estableciendo su función dentro del sistema y justificando su selección
+   de acuerdo con las necesidades funcionales del software.
+
+================================================================================
+
+
+
+
+================================================================================
+                           OBJETIVOS ESPECÍFICOS
+================================================================================
+
+   1. Identificar y definir los elementos HTML5 que se emplearán en el
+      desarrollo de las interfaces del Sistema Gestor Documental.
+
+   2. Describir la función que cumple cada tipo de elemento HTML dentro
+      de los módulos del sistema (formularios, tablas, listas, navegación).
+
+   3. Establecer los componentes visuales que conformarán cada módulo
+      de la aplicación web: autenticación, dashboard, documentos,
+      clasificaciones, historial y gestión de usuarios.
+
+   4. Definir las tecnologías frontend seleccionadas para el proyecto,
+      explicando por qué cada una fue elegida para satisfacer los
+      requerimientos del sistema.
+
+   5. Presentar el sistema de navegación entre componentes, describiendo
+      cómo el usuario se desplaza entre las distintas vistas del sistema.
+
+================================================================================
+
+
+
+
+================================================================================
+              DEFINICIÓN DE ELEMENTOS HTML A UTILIZAR EN EL DISEÑO FRONTEND
+================================================================================
+
+   A continuación se definen los elementos HTML5 que se utilizarán en la
+   construcción de las interfaces del Sistema Gestor Documental, organizados
+   por categoría según su función principal.
+
+   ────────────────────────────────────────────────────────────────────────────
+   5.1 ELEMENTOS DE ESTRUCTURA Y SEMÁNTICA
+   ────────────────────────────────────────────────────────────────────────────
+
+   Los elementos semánticos de HTML5 permiten dar significado y estructura
+   lógica al contenido de la página, mejorando la accesibilidad, la legibilidad
+   del código y el posicionamiento en buscadores.
+
+   <!DOCTYPE html>
+   Declaración que indica al navegador que el documento sigue el estándar
+   HTML5. Es obligatorio en todos los documentos HTML modernos y garantiza
+   que el navegador interprete correctamente el resto del contenido.
+
+   <html>
+   Elemento raíz que contiene todo el documento HTML. El atributo lang="es"
+   se usará para indicar que el contenido está en español, lo que beneficia
+   a los lectores de pantalla y herramientas de accesibilidad.
+
+   <head>
+   Sección del documento que contiene información de configuración no visible
+   para el usuario: codificación de caracteres, título de la página, enlace
+   a hojas de estilo y meta etiquetas. No se muestra en el navegador.
+
+   <meta>
+   Etiqueta de metadatos. Se usarán dos principalmente:
+   - charset="UTF-8": para soportar caracteres especiales del español.
+   - viewport: para habilitar el diseño responsivo en dispositivos móviles.
+
+   <title>
+   Define el texto que aparece en la pestaña del navegador. En el sistema
+   se personalizará por módulo para indicar en qué sección se encuentra
+   el usuario (por ejemplo: "Documentos | GestorDoc").
+
+   <body>
+   Contenedor del contenido visible de la página. Contiene todo lo que el
+   usuario ve e interactúa: barra lateral, área de contenido, formularios.
+
+   <nav>
+   Elemento semántico para la navegación principal del sistema. Se utilizará
+   para construir el menú lateral (sidebar) que permite al usuario moverse
+   entre los módulos de la aplicación.
+
+   <header>
+   Define la cabecera de la página o de una sección. Se empleará para la
+   barra superior que muestra el título de la sección activa y los botones
+   de acción principales como "Nuevo Documento" o "Nuevo Usuario".
+
+   <main>
+   Representa el contenido principal del documento. Es único por página y
+   contendrá el área donde se muestran los módulos del sistema: listas,
+   formularios, detalle de documentos, estadísticas del dashboard, etc.
+
+   <section>
+   Agrupa contenido temáticamente relacionado dentro de una misma página.
+   Se usará para separar bloques como el área de estadísticas y el área
+   de documentos recientes en el dashboard.
+
+   <article>
+   Elemento semántico para contenido independiente y auto-contenido. Se
+   utilizará en la vista de detalle del documento para la ficha principal
+   del documento y para la sección de revisiones.
+
+   <aside>
+   Define contenido relacionado pero secundario al principal. Se empleará
+   en la vista de detalle de documento para mostrar el panel lateral del
+   historial de acciones sobre ese documento.
+
+   <footer>
+   Define el pie de página de la aplicación, donde se puede incluir
+   información institucional o del sistema.
+
+   ────────────────────────────────────────────────────────────────────────────
+   5.2 ELEMENTOS DE FORMULARIO
+   ────────────────────────────────────────────────────────────────────────────
+
+   Los formularios son el mecanismo principal de entrada de datos en el
+   sistema. Se utilizan para el inicio de sesión, creación y edición de
+   documentos, gestión de usuarios y adición de revisiones.
+
+   <form>
+   Contenedor del formulario. Define el método de envío de datos (GET para
+   búsquedas y filtros, POST para crear o modificar información) y el tipo
+   de codificación (multipart/form-data cuando se envían archivos adjuntos).
+
+   <input type="text">
+   Campo de texto de una sola línea. Se usará para capturar el título del
+   documento, el nombre del usuario y el campo de búsqueda en la lista
+   de documentos.
+
+   <input type="email">
+   Campo especializado para direcciones de correo electrónico. El navegador
+   valida automáticamente el formato antes de enviar el formulario. Se
+   usará en el inicio de sesión y en el formulario de registro de usuarios.
+
+   <input type="password">
+   Campo de texto que oculta los caracteres ingresados. Se usará en el
+   formulario de inicio de sesión y en el formulario de creación de usuarios.
+
+   <input type="file">
+   Permite al usuario seleccionar un archivo de su dispositivo para subirlo
+   al servidor. Es el elemento central del formulario de documentos, ya que
+   permite adjuntar el archivo que representa el documento (PDF, Word, Excel).
+
+   <input type="hidden">
+   Campo invisible para el usuario que transmite datos de seguridad o de
+   relación al servidor. Django lo usa automáticamente para el token de
+   protección CSRF, que previene ataques de falsificación de solicitudes.
+
+   <textarea>
+   Campo de texto de múltiples líneas. Se usará para la descripción de
+   documentos, la descripción de clasificaciones y el campo de comentario
+   al agregar una revisión a un documento.
+
+   <select>
+   Lista desplegable que permite elegir una opción entre varias predefinidas.
+   Se usará para:
+   - Seleccionar el estado del documento (activo, inactivo, revisión, archivado).
+   - Seleccionar la clasificación del documento (Técnico, Legal, Financiero...).
+   - Seleccionar el rol del usuario (Administrador, Editor, Revisor, Visualizador).
+   - Filtrar documentos por clasificación o estado en la vista de lista.
+
+   <option>
+   Define cada opción dentro de un elemento <select>. Contiene el texto
+   visible y el valor que se envía al servidor al seleccionar esa opción.
+
+   <label>
+   Etiqueta descriptiva asociada a un campo de formulario. Mejora la
+   usabilidad (al hacer clic en la etiqueta se activa el campo) y la
+   accesibilidad para usuarios con lectores de pantalla. Se usará en todos
+   los campos de los formularios del sistema.
+
+   <button>
+   Elemento interactivo que desencadena acciones. Se usará para:
+   - Enviar formularios: "Guardar", "Iniciar Sesión", "Agregar Revisión".
+   - Acciones de navegación: "Cancelar", "Volver".
+   - Confirmar eliminaciones: "Sí, Eliminar".
+   - Acciones especiales: mostrar/ocultar contraseña en el login.
+
+   <fieldset>
+   Agrupa campos de formulario que están relacionados entre sí, dibujando
+   un borde visual alrededor del grupo. Útil para mejorar la organización
+   visual en formularios extensos.
+
+   <legend>
+   Proporciona un título descriptivo al elemento <fieldset>, indicando
+   al usuario a qué grupo de campos pertenece el conjunto.
+
+   ────────────────────────────────────────────────────────────────────────────
+   5.3 ELEMENTOS DE TABLA
+   ────────────────────────────────────────────────────────────────────────────
+
+   Las tablas se utilizan para presentar datos estructurados en filas y
+   columnas. En el sistema son el componente central de las vistas de listado.
+
+   <table>
+   Define la tabla de datos. Se usará en los módulos de: lista de documentos,
+   lista de usuarios, historial de actividad y documentos recientes en el
+   dashboard.
+
+   <thead>
+   Agrupa las filas de encabezado de la tabla. Contiene los títulos de las
+   columnas y se diferencia visualmente del cuerpo de la tabla. Permite que
+   los lectores de pantalla identifiquen correctamente los encabezados.
+
+   <tbody>
+   Agrupa las filas de datos de la tabla. Aquí se listan dinámicamente los
+   registros provenientes de la base de datos (documentos, usuarios, historial).
+
+   <tr>
+   Define una fila dentro de la tabla. Cada documento, usuario o registro
+   de historial ocupará una fila.
+
+   <th>
+   Define una celda de encabezado. Se usa dentro de <thead> para indicar
+   el nombre de cada columna: ID, Título, Clasificación, Estado, Fecha, etc.
+
+   <td>
+   Define una celda de datos. Se usa dentro de <tbody> para mostrar el
+   valor de cada campo en cada registro de la tabla.
+
+   ────────────────────────────────────────────────────────────────────────────
+   5.4 ELEMENTOS DE LISTA
+   ────────────────────────────────────────────────────────────────────────────
+
+   Los elementos de lista se utilizan para agrupar conjuntos de elementos
+   relacionados, siendo especialmente útiles en la navegación y en las
+   secciones de revisiones e historial.
+
+   <ul>
+   Lista desordenada (sin numeración). Se usará para construir el menú de
+   navegación del sidebar, donde el orden de los ítems no implica jerarquía
+   secuencial, sino agrupación temática.
+
+   <ol>
+   Lista ordenada (numerada). Se podría utilizar en el historial de
+   actividad para indicar la secuencia cronológica de acciones.
+
+   <li>
+   Elemento individual de una lista. Cada enlace del menú de navegación
+   y cada revisión de un documento se representará como un <li>.
+
+   <dl>, <dt>, <dd>
+   Lista de definiciones: útil para presentar pares término-valor.
+   Se usará en la ficha de detalle del documento para mostrar los metadatos
+   de forma estructurada: "Clasificación: Técnico", "Estado: Activo", etc.
+
+   ────────────────────────────────────────────────────────────────────────────
+   5.5 ELEMENTOS DE TEXTO Y CONTENIDO
+   ────────────────────────────────────────────────────────────────────────────
+
+   <h1> a <h6>
+   Encabezados de diferente nivel que definen la jerarquía del contenido.
+   Se usarán para el nombre del sistema en el sidebar (h1), títulos de
+   módulos (h4-h5) y subtítulos dentro de tarjetas o secciones (h6).
+
+   <p>
+   Párrafo de texto. Se usará para descripciones, mensajes informativos,
+   texto de estado vacío cuando no hay registros, y mensajes de confirmación
+   en páginas de eliminación.
+
+   <span>
+   Elemento en línea para aplicar estilos a fragmentos de texto sin generar
+   salto de línea. Se usará principalmente para las etiquetas (badges) de
+   estado de los documentos (Activo, Inactivo, En Revisión, Archivado).
+
+   <strong>
+   Indica texto de importancia. Se usará para destacar datos relevantes
+   como el nombre del documento en la confirmación de eliminación o
+   valores numéricos importantes.
+
+   <small>
+   Texto de menor relevancia visual. Se usará para fechas secundarias,
+   notas al pie de formularios y texto de ayuda en campos de entrada.
+
+   <a>
+   Hipervínculo para navegar entre páginas del sistema o enlazar recursos.
+   Se usará en los enlaces del menú lateral, botones de acción en tablas
+   (ver, editar, eliminar) y el enlace de descarga de documentos adjuntos.
+
+   <i>
+   Aunque su significado semántico es texto en cursiva, Bootstrap Icons
+   lo reutiliza para mostrar íconos vectoriales mediante clases CSS. Se
+   usará en toda la aplicación para acompañar botones y etiquetas con
+   íconos descriptivos que mejoran la comprensión visual.
+
+   <hr>
+   Línea horizontal de separación temática. Se usará para dividir secciones
+   dentro del sidebar y en páginas donde conviene separar bloques de contenido.
+
+   ────────────────────────────────────────────────────────────────────────────
+   5.6 ELEMENTOS DE AGRUPACIÓN Y LAYOUT
+   ────────────────────────────────────────────────────────────────────────────
+
+   <div>
+   Elemento de bloque genérico sin significado semántico propio. Es el
+   elemento más versátil del HTML y se usa extensivamente junto con las
+   clases de Bootstrap 5 para construir el layout del sistema. Se usará para:
+   - Contenedores de grilla (filas y columnas responsivas).
+   - Tarjetas de información (cards de Bootstrap).
+   - Mensajes de alerta y notificación.
+   - Agrupación de botones de acción.
+   - Estructura del sidebar y del área de contenido principal.
+
+   <link>
+   Elemento del <head> que vincula recursos externos al documento, como
+   hojas de estilo CSS. Se usará para enlazar Bootstrap 5 y Bootstrap Icons
+   desde sus repositorios en línea (CDN).
+
+   <style>
+   Permite definir estilos CSS directamente dentro del documento HTML.
+   Se usará para los estilos personalizados del sistema que complementan
+   o sobreescriben los estilos base de Bootstrap 5.
+
+   <script>
+   Permite incluir código JavaScript en la página. Se usará para:
+   - Incluir la librería JavaScript de Bootstrap 5.
+   - Implementar el toggle de visibilidad de contraseña en el login.
+   - Auto-ocultar mensajes de alerta después de unos segundos.
+
+================================================================================
+
+
+
+
+================================================================================
+                     ESTRUCTURA DE COMPONENTES DEL SISTEMA
+================================================================================
+
+   Los componentes web del Sistema Gestor Documental están organizados en
+   módulos funcionales. Cada módulo corresponde a una o varias vistas
+   (pantallas) que el usuario puede visualizar en el navegador.
+
+   ────────────────────────────────────────────────────────────────────────────
+   6.1 COMPONENTE DE AUTENTICACIÓN
+   ────────────────────────────────────────────────────────────────────────────
+
+   Descripción:
+   Es la puerta de entrada al sistema. Todo usuario debe autenticarse antes
+   de acceder a cualquier módulo. Presenta un formulario de inicio de sesión
+   centrado en pantalla con diseño diferente al resto de la aplicación, ya
+   que el usuario aún no ha ingresado y no se muestra el menú lateral.
+
+   Pantallas que lo conforman:
+   - Pantalla de inicio de sesión (login).
+
+   Elementos HTML que se utilizarán:
+   - <form> con método POST para enviar las credenciales de forma segura.
+   - <input type="email"> para capturar el correo electrónico del usuario.
+   - <input type="password"> para capturar la contraseña de forma oculta.
+   - <button type="submit"> para enviar el formulario de autenticación.
+   - <button type="button"> para alternar la visibilidad de la contraseña.
+   - <label> para etiquetar correctamente cada campo del formulario.
+   - <div> para estructurar el contenedor centrado de la tarjeta de login.
+   - <p> o <div class="alert"> para mostrar mensajes de error de credenciales.
+   - <h1> o <h4> para el nombre/logo del sistema "GestorDoc".
+   - <i> para el ícono de ojo que activa/desactiva la visibilidad de la clave.
+
+   Función en el sistema:
+   Valida que el correo y la contraseña correspondan a un usuario registrado
+   y activo. Si las credenciales son correctas, redirige al Dashboard.
+   Si son incorrectas, muestra un mensaje de error sin revelar cuál campo
+   falló, por razones de seguridad.
+
+   ────────────────────────────────────────────────────────────────────────────
+   6.2 COMPONENTE DE PANEL DE CONTROL (DASHBOARD)
+   ────────────────────────────────────────────────────────────────────────────
+
+   Descripción:
+   Es la pantalla de bienvenida que ve el usuario tras autenticarse. Ofrece
+   una vista general del estado del sistema mediante indicadores numéricos
+   (tarjetas de estadísticas) y una tabla con los documentos más recientes,
+   permitiendo acceso rápido a los documentos sin necesidad de buscarlos.
+
+   Pantallas que lo conforman:
+   - Pantalla principal del sistema (dashboard).
+
+   Elementos HTML que se utilizarán:
+   - <section> para separar el área de estadísticas del área de tabla.
+   - <div> con clases Bootstrap para la grilla de tarjetas de estadísticas.
+   - <h5> y <span> para mostrar el valor numérico de cada indicador.
+   - <i> para los íconos representativos de cada estadística.
+   - <table>, <thead>, <tbody>, <tr>, <th>, <td> para la tabla de documentos.
+   - <span> con clases de badge para mostrar el estado de cada documento.
+   - <a> para el enlace de acceso rápido al detalle de cada documento.
+   - <p> para el mensaje de estado vacío si no hay documentos recientes.
+
+   Indicadores que se mostrarán:
+   - Total de documentos registrados en el sistema.
+   - Cantidad de documentos con estado activo.
+   - Total de usuarios registrados.
+   - Documentos cargados en los últimos 7 días.
+
+   ────────────────────────────────────────────────────────────────────────────
+   6.3 COMPONENTE DE GESTIÓN DE DOCUMENTOS
+   ────────────────────────────────────────────────────────────────────────────
+
+   Descripción:
+   Es el módulo central del sistema. Permite gestionar el ciclo de vida
+   completo de un documento: creación, consulta, edición, revisión y
+   eliminación. Contempla cuatro pantallas diferentes.
+
+   Pantallas que lo conforman:
+
+   a) Lista de documentos:
+      Muestra todos los documentos con herramientas de búsqueda y filtrado.
+      Elementos HTML: <form> con GET, <input type="text"> para búsqueda,
+      <select> para filtros de clasificación y estado, <button> para aplicar
+      filtros, <table> con <thead>/<tbody>/<tr>/<th>/<td> para los resultados,
+      <span> para badges de estado, <a> para acciones (ver, editar, eliminar).
+
+   b) Detalle del documento:
+      Muestra toda la información de un documento específico, su archivo
+      adjunto, las revisiones realizadas y el historial de cambios.
+      Elementos HTML: <article> para la ficha del documento, <dl>/<dt>/<dd>
+      para los metadatos, <a download> para el enlace de descarga del archivo,
+      <aside> para el panel de historial, <ul>/<li> para listar revisiones,
+      <form> con POST y <textarea> para agregar nuevas revisiones.
+
+   c) Formulario de documento (crear/editar):
+      Permite ingresar los datos de un nuevo documento o modificar uno
+      existente, incluyendo la subida del archivo adjunto.
+      Elementos HTML: <form> con POST y enctype="multipart/form-data",
+      <input type="text"> para el título, <textarea> para la descripción,
+      <select> para clasificación y estado, <input type="file"> para el
+      archivo, <label> para todos los campos, <button> para guardar o cancelar.
+
+   d) Confirmación de eliminación:
+      Pantalla de seguridad que pide confirmación antes de eliminar
+      un documento de forma permanente.
+      Elementos HTML: <div> con estilo de alerta de peligro (rojo),
+      <p><strong> para mostrar el nombre del documento a eliminar,
+      <form> con POST, <button type="submit"> para confirmar, <a> para cancelar.
+
+   ────────────────────────────────────────────────────────────────────────────
+   6.4 COMPONENTE DE CLASIFICACIONES
+   ────────────────────────────────────────────────────────────────────────────
+
+   Descripción:
+   Permite administrar las categorías bajo las cuales se organizan los
+   documentos del sistema. Las clasificaciones agrupan documentos por
+   su naturaleza: Administrativo, Técnico, Legal, Financiero, entre otros.
+   Este componente es de uso exclusivo del administrador del sistema.
+
+   Pantallas que lo conforman:
+
+   a) Lista de clasificaciones:
+      Muestra todas las clasificaciones registradas con opción de edición.
+      Elementos HTML: <table>/<thead>/<tbody>/<tr>/<th>/<td> para el listado,
+      <a> para el botón de editar cada clasificación, <button> o <a> para
+      agregar una nueva clasificación.
+
+   b) Formulario de clasificación (crear/editar):
+      Permite crear una nueva clasificación o modificar el nombre y la
+      descripción de una existente.
+      Elementos HTML: <form> con POST, <input type="text"> para el nombre,
+      <textarea> para la descripción, <label> para cada campo, <button>
+      para guardar o cancelar.
+
+   ────────────────────────────────────────────────────────────────────────────
+   6.5 COMPONENTE DE HISTORIAL DE ACTIVIDAD
+   ────────────────────────────────────────────────────────────────────────────
+
+   Descripción:
+   Registro de auditoría de todas las acciones realizadas sobre documentos
+   en el sistema. Permite rastrear quién realizó cada acción, sobre qué
+   documento y en qué momento. Es una vista de solo lectura: no permite
+   crear ni modificar registros, ya que se genera automáticamente.
+
+   Acciones que registra automáticamente el sistema:
+   - Cuando un documento es creado.
+   - Cuando un documento es modificado.
+   - Cuando un documento es eliminado.
+   - Cuando se agrega una revisión a un documento.
+
+   Pantallas que lo conforman:
+   - Pantalla de historial global del sistema.
+
+   Elementos HTML que se utilizarán:
+   - <table> con <thead>/<tbody>/<tr>/<th>/<td> para mostrar los registros.
+   - Columnas: Fecha y hora, Usuario, Documento afectado, Acción realizada.
+   - <span> con badge para categorizar visualmente el tipo de acción.
+   - <i> para el ícono de perfil del usuario junto a su nombre.
+   - <p> para el mensaje de historial vacío si no hay registros.
+
+   ────────────────────────────────────────────────────────────────────────────
+   6.6 COMPONENTE DE GESTIÓN DE USUARIOS
+   ────────────────────────────────────────────────────────────────────────────
+
+   Descripción:
+   Módulo exclusivo del administrador para gestionar las cuentas de acceso
+   al sistema. Permite crear usuarios, asignarles un rol, cambiar su estado
+   (activo/inactivo) y eliminarlos cuando ya no formen parte de la organización.
+
+   Roles disponibles en el sistema:
+   - Administrador : Acceso completo a todos los módulos.
+   - Editor        : Puede crear y editar documentos.
+   - Revisor       : Puede agregar revisiones y comentarios a documentos.
+   - Visualizador  : Solo puede consultar documentos existentes.
+
+   Pantallas que lo conforman:
+
+   a) Lista de usuarios:
+      Muestra todos los usuarios registrados con su nombre, correo, rol
+      y estado actual.
+      Elementos HTML: <table>/<thead>/<tbody>/<tr>/<th>/<td> para el listado,
+      <span> con badge para el rol y para el estado (activo/inactivo),
+      <i> para el ícono de avatar de usuario, <a> para editar y eliminar.
+
+   b) Formulario de usuario (crear/editar):
+      Permite registrar un nuevo usuario o actualizar los datos de uno
+      existente, incluyendo contraseña, rol y estado.
+      Elementos HTML: <form> con POST, <input type="text"> para el nombre,
+      <input type="email"> para el correo, <input type="password"> para la
+      contraseña, <select> para el rol y el estado, <label> para todos los
+      campos, <button> para guardar o cancelar.
+
+   c) Confirmación de eliminación:
+      Página de seguridad que solicita confirmación antes de eliminar
+      un usuario del sistema de forma permanente.
+      Elementos HTML: <form> con POST, <p><strong> para mostrar el nombre
+      del usuario a eliminar, <button type="submit"> para confirmar, <a>
+      para cancelar y volver a la lista.
+
+================================================================================
+
+
+
+
+================================================================================
+                       TECNOLOGÍAS Y LIBRERÍAS FRONTEND
+================================================================================
+
+   Para el desarrollo de la interfaz web del Sistema Gestor Documental se
+   han seleccionado las siguientes tecnologías, justificando cada elección:
+
+   HTML5
+   Lenguaje de marcado estándar para la estructura del contenido web. La
+   versión HTML5 aporta elementos semánticos (<nav>, <main>, <article>,
+   <section>, <aside>) que mejoran la accesibilidad y la organización del
+   código. Es el estándar universal compatible con todos los navegadores
+   modernos.
+
+   CSS3
+   Lenguaje de estilos para la presentación visual de los documentos HTML.
+   Se usarán características modernas de CSS3 como Flexbox y variables CSS
+   para los estilos personalizados del sistema, especialmente en el sidebar
+   de navegación y las tarjetas de estadísticas del dashboard.
+
+   Bootstrap 5.3
+   Framework CSS de código abierto que proporciona un sistema de grilla
+   responsivo, componentes visuales prediseñados (botones, tablas, formularios,
+   badges, alertas, tarjetas) e íconos. Se eligió Bootstrap 5 porque:
+   - Acelera significativamente el desarrollo frontend.
+   - Garantiza diseño responsivo sin configuración adicional.
+   - Sus componentes son accesibles por defecto (cumplen ARIA).
+   - Es ampliamente conocido, facilitando el mantenimiento futuro.
+   - Elimina la necesidad de escribir CSS desde cero para componentes comunes.
+
+   Bootstrap Icons
+   Librería de íconos vectoriales (SVG) de Bootstrap con más de 1800 íconos.
+   Se integra mediante clases CSS en elementos <i>. Se eligió porque es
+   coherente con Bootstrap 5, es gratuita y sus íconos son claros e intuitivos
+   para aplicaciones de gestión empresarial.
+
+   Django Template Language (DTL)
+   Motor de plantillas de Django que permite insertar datos dinámicos en los
+   archivos HTML usando una sintaxis específica ({{ variable }}, {% etiqueta %}).
+   Permite la reutilización de código mediante herencia de plantillas
+   ({% extends %} y {% block %}), lo que evita repetir el header, sidebar
+   y footer en cada página del sistema.
+
+   JavaScript (vanilla)
+   Se usará JavaScript básico sin frameworks adicionales para funcionalidades
+   puntuales de mejora de experiencia de usuario: mostrar/ocultar contraseña,
+   auto-cerrar mensajes de alerta y activar componentes de Bootstrap.
+   Se elige JavaScript puro (sin jQuery ni React) para mantener la simplicidad
+   y el bajo peso de la aplicación.
+
+================================================================================
+
+
+
+
+================================================================================
+                               CONCLUSIONES
+================================================================================
+
+   El Sistema Gestor Documental requiere una interfaz web clara, funcional
+   y accesible, que permita a usuarios con diferentes niveles de experiencia
+   tecnológica interactuar con el sistema de manera intuitiva.
+
+   Los elementos HTML5 seleccionados en este documento cumplen con el principio
+   de semántica web: cada elemento fue elegido porque su significado natural
+   corresponde a su uso en el sistema (tablas para datos tabulares, formularios
+   para captura de datos, nav para navegación, etc.), lo cual mejora la
+   accesibilidad y la mantenibilidad del código.
+
+   La combinación de Django Template Language para la generación dinámica
+   de contenido y Bootstrap 5 para los estilos visuales garantiza un
+   desarrollo ágil, un diseño moderno y responsivo, y una base sólida para
+   escalar el sistema con nuevas funcionalidades en el futuro.
+
+   Los seis componentes definidos (autenticación, dashboard, documentos,
+   clasificaciones, historial y usuarios) cubren de manera completa los
+   requerimientos funcionales del sistema, y cada uno de ellos ha sido
+   diseñado con una separación clara de responsabilidades que facilita
+   el desarrollo, las pruebas y el mantenimiento del software.
+
+================================================================================
+                              FIN DEL DOCUMENTO
+================================================================================
+
+   Sistema Gestor Documental - Especificación de Componentes Frontend
+   Versión 1.0 | Fecha: 22 de marzo de 2026
+
+================================================================================
