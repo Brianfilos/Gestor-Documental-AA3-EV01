@@ -1,0 +1,75 @@
+#=========================================================================#
+# Plantilla de proxy de Hestia para gestor.filosdev.com (HTTPS)           #
+# Basada en la plantilla "cancelaciones" del servidor.                    #
+# Copiar a /usr/local/hestia/data/templates/web/nginx/gestordoc.stpl      #
+#=========================================================================#
+
+server {
+        listen      %ip%:%proxy_ssl_port% ssl;
+        server_name %domain_idn% %alias_idn%;
+        error_log   /var/log/%web_system%/domains/%domain%.error.log error;
+        access_log  /var/log/%web_system%/domains/%domain%.log combined;
+
+        ssl_certificate     %ssl_pem%;
+        ssl_certificate_key %ssl_key%;
+        #Commented out ssl_stapling directives due to Lets Encrypt ending OCSP support in 2025
+        #ssl_stapling        on;
+        #ssl_stapling_verify on;
+
+        # TLS 1.3 0-RTT anti-replay
+        if ($anti_replay = 307) { return 307 https://$host$request_uri; }
+        if ($anti_replay = 425) { return 425; }
+
+        include %home%/%user%/conf/web/%domain%/nginx.hsts.conf*;
+
+        client_max_body_size 20M;
+
+        location ~ /\.(?!well-known\/|file) {
+                deny all;
+                return 404;
+        }
+
+        location = / {
+                root /opt/gestor-documental/proyecto/despliegue/landing;
+                try_files /index.html =404;
+        }
+
+        location ^~ /sitio/ {
+                alias /opt/gestor-documental/proyecto/despliegue/landing/;
+                expires 7d;
+        }
+
+        location = /movil {
+                return 301 /movil/;
+        }
+
+        location ^~ /movil/ {
+                alias /opt/gestor-documental/proyecto/despliegue/movil/;
+                index index.html;
+        }
+
+        location ^~ /static/ {
+                alias /opt/gestor-documental/proyecto/backend/staticfiles/;
+                expires 7d;
+        }
+
+        location ^~ /media/ {
+                alias /opt/gestor-documental/proyecto/backend/media/;
+        }
+
+        location / {
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto https;
+                proxy_pass http://127.0.0.1:8020;
+        }
+
+        location /error/ {
+                alias %home%/%user%/web/%domain%/document_errors/;
+        }
+
+        proxy_hide_header Upgrade;
+
+        include %home%/%user%/conf/web/%domain%/nginx.ssl.conf_*;
+}
