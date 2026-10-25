@@ -189,9 +189,11 @@
 
   function pantallaDashboard() {
     var c = marco('Dashboard', 'dashboard');
-    Promise.all([api('documentos/'), api('usuarios/')]).then(function (r) {
+    // El total de activos se pide filtrado a la API: contar sobre docs.results
+    // solo vería la primera página (10 documentos) y daría un número menor.
+    Promise.all([api('documentos/'), api('usuarios/'), api('documentos/?estado=activo')]).then(function (r) {
       var docs = r[0], usuarios = r[1];
-      var activos = docs.results.filter(function (d) { return d.estado === 'activo'; }).length;
+      var activos = r[2].count;
       c.innerHTML =
         '<div class="saludo">Bienvenido, ' + esc(sesion.usuario().nombre || '') + '</div>' +
         '<div class="stats">' +
