@@ -26,3 +26,12 @@ Thumbs.db
 .vscode/
 .idea/
 *.iml
+
+# Artefactos de Google Drive y datos locales
+desktop.ini
+*.sqlite3
+proyecto/backend/staticfiles/
+proyecto/backend/media/
+proyecto/backend/test_media/
+proyecto/backend/demo_media/
+.claude/
