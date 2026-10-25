@@ -15,8 +15,9 @@ def login_view(request):
             user = form.get_user()
             login(request, user)
             return redirect('dashboard')
-        else:
-            messages.error(request, 'Correo o contraseña incorrectos.')
+        # Si las credenciales no son válidas, el formulario ya muestra el error en
+        # la misma pantalla. No se agrega un mensaje con messages.error porque
+        # quedaba guardado y aparecía en el dashboard después del siguiente login.
     else:
         form = LoginForm()
     return render(request, 'usuarios/login.html', {'form': form})
