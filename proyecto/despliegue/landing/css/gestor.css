@@ -90,3 +90,10 @@
     padding-top: 50px;
   }
 }
+
+/* La plantilla corre el botón del menú móvil 24px a la derecha (margin-right: -24px).
+   Con la columna del menú más angosta de esta adaptación, eso hacía que la página
+   desbordara la pantalla en celulares (329px de contenido en un ancho de 320px). */
+.mobile-menu.mean-container .mean-bar .meanmenu-reveal {
+  margin-right: 0 !important;
+}
