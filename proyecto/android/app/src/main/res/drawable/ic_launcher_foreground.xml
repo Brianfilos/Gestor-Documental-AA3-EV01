@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Icono de la aplicación Gestor Documental.
+    Representa una hoja de documento con líneas de texto y la esquina doblada.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Cuerpo de la hoja -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M36,28 L62,28 L76,42 L76,80 C76,82.2 74.2,84 72,84 L36,84 C33.8,84 32,82.2 32,80 L32,32 C32,29.8 33.8,28 36,28 Z" />
+
+    <!-- Esquina doblada del documento -->
+    <path
+        android:fillColor="#BDD7EE"
+        android:pathData="M62,28 L76,42 L64,42 C62.9,42 62,41.1 62,40 Z" />
+
+    <!-- Líneas de texto del documento -->
+    <path
+        android:fillColor="#1F4E79"
+        android:pathData="M40,52 L68,52 L68,56 L40,56 Z" />
+    <path
+        android:fillColor="#1F4E79"
+        android:pathData="M40,62 L68,62 L68,66 L40,66 Z" />
+    <path
+        android:fillColor="#1F4E79"
+        android:pathData="M40,72 L58,72 L58,76 L40,76 Z" />
+</vector>

@@ -1,31 +1,63 @@
 {% extends 'base.html' %}
+{% comment %}
+  Plantilla: usuarios/formulario.html
+  Módulo   : Gestión de usuarios - Formulario crear/editar
+  Vista    : usuarios/views.py → usuario_create() / usuario_edit()
+  URLs     : /usuarios/crear/  |  /usuarios/<id>/editar/
+  Función  : Formulario reutilizable para crear nuevos usuarios o editar
+             usuarios existentes. Permite definir nombre, correo, contraseña,
+             rol del sistema y estado de la cuenta.
+  Contexto : form (UsuarioForm), accion ("Crear" o "Editar")
+{% endcomment %}
+
 {% block title %}{{ accion }} Usuario - Gestor Documental{% endblock %}
 {% block page_title %}{{ accion }} Usuario{% endblock %}
 
 {% block content %}
+<!-- Columna centrada de tamaño mediano para el formulario de usuario -->
 <div class="row justify-content-center">
     <div class="col-lg-6">
         <div class="form-card">
+            <!-- Encabezado del formulario con título dinámico -->
             <h6 class="fw-bold mb-4 pb-2 border-bottom">
                 <i class="bi bi-person me-2" style="color:#1565C0;"></i>{{ accion }} Usuario
             </h6>
+
+            <!-- Formulario de usuario
+                 method="post" : Envío seguro de datos (contraseña nunca por GET)
+                 novalidate    : Delegación de la validación a Django (manejo de errores en el servidor) -->
             <form method="post" novalidate>
-                {% csrf_token %}
+                {% csrf_token %} <!-- Token CSRF: protección obligatoria para formularios POST en Django -->
+
+                <!-- Itera sobre cada campo del formulario UsuarioForm.
+                     Campos incluidos: nombre, correo, contrasena, idRol, estado -->
                 {% for field in form %}
                 <div class="mb-3">
+                    <!-- Etiqueta del campo con asterisco rojo (*) para campos obligatorios -->
                     <label class="form-label fw-semibold" style="font-size:0.875rem;">
-                        {{ field.label }}{% if field.field.required %} <span class="text-danger">*</span>{% endif %}
+                        {{ field.label }}
+                        {% if field.field.required %}
+                        <span class="text-danger">*</span> <!-- Campo requerido: no puede estar vacío -->
+                        {% endif %}
                     </label>
+
+                    <!-- Widget HTML del campo (input text, email, password, select) -->
                     {{ field }}
+
+                    <!-- Error de validación del campo: muestra el primer mensaje de error -->
                     {% if field.errors %}
                     <div class="text-danger" style="font-size:0.8rem;">{{ field.errors.0 }}</div>
                     {% endif %}
                 </div>
                 {% endfor %}
+
+                <!-- Botones de acción -->
                 <div class="d-flex gap-2 mt-4">
+                    <!-- Guardar: crea el usuario o actualiza el existente -->
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-check2 me-1"></i>{{ accion }}
                     </button>
+                    <!-- Cancelar: vuelve al listado de usuarios sin aplicar cambios -->
                     <a href="{% url 'usuario_list' %}" class="btn btn-outline-secondary">
                         <i class="bi bi-x me-1"></i>Cancelar
                     </a>

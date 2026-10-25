@@ -108,6 +108,10 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': True,
     'AUTH_HEADER_TYPES': ('Bearer',),
+    # La llave primaria del modelo Usuario es 'idUsuario' (no el 'id' por
+    # defecto de Django), por lo que el token JWT debe construirse con ese campo.
+    'USER_ID_FIELD': 'idUsuario',
+    'USER_ID_CLAIM': 'user_id',
 }
 
 # CORS para Android y web

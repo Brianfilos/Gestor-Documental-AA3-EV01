@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Gestor Documental</title>
+  <!-- Plugins CSS -->
+  <link rel="stylesheet" href="/sitio/plugins/bootstrap-4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/sitio/plugins/meanmenu/meanmenu.css">
+  <!-- fonts -->
+  <link rel="stylesheet" href="/sitio/fonts/fontawesome-5/css/all.min.css">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="/sitio/css/settings.css">
+  <link rel="stylesheet" href="/sitio/css/style.css">
+  <!-- Ajustes del Gestor Documental sobre la plantilla -->
+  <link rel="stylesheet" href="/sitio/css/gestor.css">
+</head>
+
+<body>
+<div class="site-wrapper">
+    <header class="site-header">
+        <div class="container">
+            <div class="row justify-content-center align-items-center position-relative">
+                <div class="col-sm-4 col-8 col-lg-3 col-xl-3 order-lg-1">
+                    <div class="brand">
+                        <a href="/" class="brand-text"><i class="fas fa-folder-open"></i>Gestor Documental</a>
+                    </div>
+                </div>
+                <div class="col-sm-7 col-lg-3 col-xl-3 d-none d-sm-block order-lg-3">
+                    <div class="header-btns">
+                        <div class="btn-1">
+                            <a href="/login/">Iniciar sesión</a>
+                        </div>
+                        <div class="btn-2">
+                            <a href="#modulos">Conocer más</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Menu Block -->
+                <div class="col-sm-1 col-4 col-lg-6 col-xl-6 position-static order-lg-2">
+                    <div class="main-navigation">
+                        <ul class="main-menu">
+                            <li class="menu-item"><a href="#funciones">Funciones</a></li>
+                            <li class="menu-item"><a href="#trazabilidad">Trazabilidad</a></li>
+                            <li class="menu-item"><a href="#modulos">Módulos</a></li>
+                            <li class="menu-item"><a href="#app-movil">App móvil</a></li>
+                            <li class="menu-item"><a href="#contacto">Contacto</a></li>
+                        </ul>
+                    </div>
+                    <div class="mobile-menu"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+  <!-- Hero Area  -->
+  <section class="hero-area">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-6 order-lg-2">
+          <div class="hero-image">
+            <img src="/sitio/image/hero-image.png" alt="Equipo de trabajo usando el Gestor Documental">
+          </div>
+        </div>
+        <div class="col-lg-6 order-lg-1">
+          <div class="hero-content">
+            <h1>Todos los documentos de tu organización en un solo lugar.</h1>
+            <p>El Sistema Gestor Documental permite registrar, clasificar, consultar, revisar y auditar los
+              documentos institucionales desde el navegador o desde el teléfono.
+            </p>
+            <div class="hero-form">
+              <form action="/login/" method="get">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Ingresa tu correo electrónico">
+                  <button class="submit-btn">Ingresar</button>
+                </div>
+                <p class="form-text">¿Ya tienes una cuenta? <a href="/login/" class="link">Iniciar sesión</a></p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Features Area  -->
+  <section class="feature-section" id="funciones">
+        <div class="shape">
+                <img src="/sitio/image/landing-1-shape.svg" alt="">
+          </div>
+      <div class="container">
+          <div class="section-title text-center">
+              <h2>Lo que puedes hacer con el sistema</h2>
+          </div>
+          <div class="row mb-d-30">
+              <div class="col-md-6 col-lg-4 mb--30">
+                  <div class="feature-card">
+                      <div class="card-icon">
+                          <i class="fas fa-file-upload"></i>
+                      </div>
+                      <div class="card-content">
+                          <h3>Gestión de documentos</h3>
+                          <p>Carga cada documento con su título, descripción, clasificación, estado y archivo
+                              adjunto; luego edítalo o elimínalo cuando sea necesario.</p>
+                              <a href="#trazabilidad" class="btn btn-link right-icon">Ver más <i class="fas fa-chevron-right"></i></a>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-6 col-lg-4 mb--30">
+                  <div class="feature-card">
+                      <div class="card-icon">
+                          <i class="fas fa-search"></i>
+                      </div>
+                      <div class="card-content">
+                          <h3>Búsqueda y filtros</h3>
+                          <p>Encuentra un documento por texto y fíltralo por clasificación o por estado: activo,
+                              inactivo, en revisión o archivado.</p>
+                              <a href="#trazabilidad" class="btn btn-link right-icon">Ver más <i class="fas fa-chevron-right"></i></a>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-6 col-lg-4 mb--30">
+                  <div class="feature-card">
+                      <div class="card-icon">
+                          <i class="fas fa-users-cog"></i>
+                      </div>
+                      <div class="card-content">
+                          <h3>Usuarios y roles</h3>
+                          <p>Administra las cuentas del sistema y asigna a cada persona su rol: Administrador,
+                              Editor, Revisor o Visualizador.</p>
+                              <a href="#modulos" class="btn btn-link right-icon">Ver más <i class="fas fa-chevron-right"></i></a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+  </section>
+
+  <!-- Content Area  -->
+  <section class="content-section-01" id="trazabilidad">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-5  col-sm-6 col-10">
+                    <div class="content-img">
+                        <img src="/sitio/image/content-image-1.png" alt="">
+                    </div>
+                </div>
+
+                <div class="col-xl-5 offset-xl-1 col-sm-6">
+                    <div class="content-right-content">
+                        <h2>Consulta tus documentos donde estés</h2>
+                        <p>
+                            La aplicación móvil para Android usa la misma base de datos que la aplicación web: un
+                            documento cargado desde el navegador se ve de inmediato en el teléfono.
+                        </p>
+                        <div class="content-link">
+                            <a href="#modulos">Ver los módulos <i class="fas fa-chevron-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+  <section class="content-section-02">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-5 offset-xl-1 col-sm-6 col-10 order-sm-2">
+                    <div class="content-img">
+                        <img src="/sitio/image/content-image-2.png" alt="">
+                    </div>
+                </div>
+                <div class="col-xl-5  col-sm-6 order-sm-1">
+                    <div class="content-left-content">
+                        <h2>Nada se pierde: historial y trazabilidad</h2>
+                        <p>
+                            Cada acción sobre un documento queda registrada con el usuario que la hizo y la fecha
+                            en que ocurrió.
+                        </p>
+                        <ul class="content-list">
+                            <li>
+                                <span><i class="fas fa-check"></i></span>Historial por documento
+                                e historial global
+                            </li>
+                            <li>
+                                <span><i class="fas fa-check"></i></span>Revisiones con
+                                comentarios
+                            </li>
+                            <li>
+                                <span><i class="fas fa-check"></i></span>Panel con indicadores
+                                de gestión
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+  <section class="content-section-03">
+        <div class="shape">
+                <img src="/sitio/image/landing-4.svg" alt="">
+            </div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-5 col-lg-6 col-md-5 col-sm-6 col-10">
+                    <div class="content-img">
+                        <img src="/sitio/image/content-image-3.png" alt="">
+                    </div>
+                </div>
+                <div class="col-xl-5  offset-xl-1 col-lg-6 col-md-7 col-sm-6 ">
+                    <div class="content-left-content">
+                        <h2>Revisa y clasifica en equipo</h2>
+                        <p>
+                            Organiza los documentos por clasificaciones y registra revisiones con comentarios; al
+                            hacerlo, el documento pasa al estado «En revisión».
+                        </p>
+                        <div class="content-bottom-part">
+                          <p>¿Quieres verlo funcionando? Ingresa al sistema con tu usuario y recorre el panel de
+                            control.</p>
+                          <div class="content-btn">
+                            <a href="/login/" class="btn btn--primary">Ingresar al sistema</a>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- Modulos section (bloque de precios de la plantilla) -->
+    <section class="pricing-section" id="modulos">
+        <div class="shape">
+            <img src="/sitio/image/landing-2-shape.svg" alt="">
+        </div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="section-title text-center">
+                        <h2>Tres módulos, una sola base de datos</h2>
+                        <p>La aplicación web, la capa de servicios y la aplicación móvil están integradas y
+                            comparten la misma información.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="custom-tab-wrapper monthly" id="pricing-tab-7">
+                <div class="row mb-d-30">
+                    <div class="col-lg-4">
+                        <div class="pricing-card">
+
+                            <div class="card-head">
+                                <h6>Módulo 1</h6>
+                                <h2 class="modulo-nombre">Aplicación web</h2>
+                                <p>Interfaz para el navegador construida con Django 4.2 y Bootstrap 5.</p>
+                            </div>
+
+                            <div class="card-content">
+                                <ul class="pricing-list">
+                                    <li><span><i class="fas fa-check"></i></span>Inicio de sesión</li>
+                                    <li><span><i class="fas fa-check"></i></span>Panel de control</li>
+                                    <li><span><i class="fas fa-check"></i></span>Documentos y clasificaciones</li>
+                                    <li><span><i class="fas fa-check"></i></span>Usuarios e historial</li>
+                                </ul>
+                                <div class="card-btn">
+                                    <a href="/login/" class="btn btn--primary">Abrir la aplicación</a>
+                                </div>
+                                <p>gestor.filosdev.com/login/</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="pricing-card active">
+
+                            <div class="card-head">
+                                <h6>Módulo 2</h6>
+                                <span class="card-badge">Integración</span>
+                                <h2 class="modulo-nombre">API REST</h2>
+                                <p>Servicios con Django REST Framework que conectan la web y el móvil.</p>
+                            </div>
+
+
+                            <div class="card-content">
+                                <ul class="pricing-list">
+                                    <li><span><i class="fas fa-check"></i></span>Autenticación con JWT</li>
+                                    <li><span><i class="fas fa-check"></i></span>Respuestas en formato JSON</li>
+                                    <li><span><i class="fas fa-check"></i></span>Resultados paginados</li>
+                                    <li><span><i class="fas fa-check"></i></span>Base de datos MySQL</li>
+                                </ul>
+                                <div class="card-btn">
+                                    <a href="#app-movil" class="btn btn--primary">Probar la app web</a>
+                                </div>
+                                <p>Ruta /api/ del servidor</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-4">
+                        <div class="pricing-card">
+
+                            <div class="card-head">
+                                <h6>Módulo 3</h6>
+                                <h2 class="modulo-nombre">App Android</h2>
+                                <p>Aplicación nativa en Kotlin para Android 8.0 o superior.</p>
+                            </div>
+
+
+                            <div class="card-content">
+                                <ul class="pricing-list">
+                                    <li><span><i class="fas fa-check"></i></span>Sesión persistente</li>
+                                    <li><span><i class="fas fa-check"></i></span>Listado y detalle</li>
+                                    <li><span><i class="fas fa-check"></i></span>Registro de revisiones</li>
+                                    <li><span><i class="fas fa-check"></i></span>Crear y editar documentos</li>
+                                </ul>
+                                <div class="card-btn">
+                                    <a href="/movil/" class="btn btn--primary">Abrir versión web</a>
+                                </div>
+                                <p>También disponible en el navegador</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="pricing-extra-info">
+                            <p><span>¿Quieres ver el código?</span><a href="https://github.com/rodriguezmoracarolina2016-dotcom/GestorDocumental">Visita el repositorio del proyecto</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- App móvil en la web: la versión web de la app Android dentro de un marco de teléfono -->
+    <section class="app-movil-section" id="app-movil">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-5 col-md-10 order-lg-2">
+                    <div class="phone-frame">
+                        <div class="phone-notch"></div>
+                        <iframe src="/movil/" title="Versión web de la app móvil del Gestor Documental" loading="lazy"></iframe>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-10 order-lg-1">
+                    <div class="content-left-content">
+                        <h2>La app móvil, ahora también en el navegador</h2>
+                        <p>Esta es la versión web de la aplicación Android del Gestor Documental: tiene las mismas
+                            pantallas y consume la misma API REST, así que los datos son los mismos que ves en la
+                            aplicación web y en el teléfono. Pruébala aquí mismo.</p>
+                        <ul class="content-list">
+                            <li><span><i class="fas fa-check"></i></span>Correo: admin@gestordoc.com</li>
+                            <li><span><i class="fas fa-check"></i></span>Contraseña: Admin2024*</li>
+                            <li><span><i class="fas fa-check"></i></span>Dashboard, documentos, revisiones, historial y usuarios</li>
+                        </ul>
+                        <div class="content-btn mt-4">
+                            <a href="/movil/" class="btn btn--primary">Abrir en pantalla completa</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Footer Section -->
+<div class="footer-section" id="contacto">
+    <div class="container">
+        <div class="footer-newsletter-section">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 col-xl-8">
+                    <div class="footer-newsletter-content">
+                        <h2>¿Necesitas una cuenta en el sistema?</h2>
+                        <p>Déjanos tu correo y el administrador del Gestor Documental te creará un usuario con el
+                            rol que corresponda.</p>
+                    </div>
+                </div>
+                <div class="col-lg-7 col-xl-6">
+                    <div class="footer-newsletter-form">
+                      <form action="">
+                            <div class="form-group">
+                              <input type="text" class="form-control" placeholder="Ingresa tu correo electrónico">
+                              <button class="submit-btn">Solicitar</button>
+                            </div>
+                            <p class="form-text"><i class="fas fa-lock"></i> Página de demostración del proyecto formativo: el formulario no envía datos.</p>
+                      </form>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="row margin-decrese">
+            <div class="col-xl-4 col-lg-5 col-margin">
+              <div class="single-footer">
+                <div class="footer-title">
+                  <span class="brand-text"><i class="fas fa-folder-open"></i>Gestor Documental</span>
+                </div>
+                <div class="footer-text">
+                  <p>Proyecto formativo del programa Análisis y Desarrollo de Software del SENA, ficha 3186649.</p>
+                </div>
+                <ul class="footer-social-list">
+                    <li>
+                      <a href="https://github.com/rodriguezmoracarolina2016-dotcom/GestorDocumental">
+                        <i class="fab fa-github"></i>
+                      </a>
+                    </li>
+                  </ul>
+              </div>
+            </div>
+            <div class="col-lg-2 col-sm-4 col-6 offset-lg-1 col-margin">
+                <div class="single-footer">
+                    <div class="footer-title">
+                        <h6>Sistema</h6>
+                      </div>
+                      <ul class="footer-list">
+                        <li><a href="#funciones">Funciones</a></li>
+                        <li><a href="#trazabilidad">Trazabilidad</a></li>
+                        <li><a href="#modulos">Módulos</a></li>
+                        <li><a href="/login/">Iniciar sesión</a></li>
+                      </ul>
+                </div>
+            </div>
+            <div class="col-lg-2 col-sm-4 col-6 col-margin">
+                <div class="single-footer">
+                    <div class="footer-title">
+                        <h6>Tecnologías</h6>
+                      </div>
+                      <ul class="footer-list">
+                        <li><a href="https://www.djangoproject.com/">Django</a></li>
+                        <li><a href="https://www.django-rest-framework.org/">Django REST Framework</a></li>
+                        <li><a href="https://www.mysql.com/">MySQL</a></li>
+                        <li><a href="https://developer.android.com/">Android</a></li>
+                      </ul>
+                </div>
+            </div>
+            <div class="col-lg-2 col-sm-4 col-margin">
+                <div class="single-footer">
+                    <div class="footer-title">
+                        <h6>Créditos</h6>
+                      </div>
+                      <ul class="footer-list">
+                        <li><a href="https://grayic.com/">Plantilla SaaS Application (Grayic)</a></li>
+                        <li><a href="https://ultahost.com/">Alojado en un VPS de UltaHost</a></li>
+                      </ul>
+                </div>
+            </div>
+          </div>
+    </div>
+  </div>
+</div>
+  <!-- Vendor JS-->
+  <script src="/sitio/plugins/jquery/jquery.min.js"></script>
+  <script src="/sitio/plugins/jquery/jquery-migrate.min.js"></script>
+  <script src="/sitio/plugins/bootstrap-4.3.1/js/bootstrap.bundle.js"></script>
+  <script src="/sitio/plugins/meanmenu/jquery.meanmenu.js"></script>
+  <!-- Plugins JS -->
+  <script src="/sitio/js/active.js"></script>
+</body>
+
+</html>

@@ -2,23 +2,37 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <!-- Viewport responsivo: adapta la interfaz a pantallas móviles y de escritorio -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bloque DTL: permite a cada plantilla hija personalizar el título de la pestaña -->
     <title>{% block title %}Gestor Documental{% endblock %}</title>
-    <!-- Bootstrap 5 -->
+
+    <!-- Bootstrap 5.3.2: framework CSS para el diseño responsivo y componentes UI -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
+    <!-- Bootstrap Icons 1.11.3: librería de iconos vectoriales SVG -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
     <style>
+        /* =====================================================================
+           VARIABLES CSS GLOBALES DEL SISTEMA
+           Define la paleta de colores y dimensiones reutilizables en toda la app
+        ===================================================================== */
         :root {
-            --primary: #1565C0;
-            --primary-dark: #0D47A1;
-            --primary-light: #1976D2;
-            --accent: #FF6F00;
-            --sidebar-width: 260px;
+            --primary: #1565C0;       /* Azul primario: botones, enlaces activos */
+            --primary-dark: #0D47A1;  /* Azul oscuro: cabecera del sidebar */
+            --primary-light: #1976D2; /* Azul claro: fondo del sidebar */
+            --accent: #FF6F00;        /* Naranja acento: elementos destacados */
+            --sidebar-width: 260px;   /* Ancho fijo de la barra lateral */
         }
+
+        /* Fuente del sistema para máxima legibilidad en todos los SO */
         body { background: #F5F7FA; font-family: 'Segoe UI', sans-serif; }
 
-        /* SIDEBAR */
+        /* =================================================================
+           SIDEBAR - Barra de navegación lateral fija
+           Usa gradiente vertical del azul oscuro al primario.
+           Position fixed para que permanezca visible al hacer scroll.
+        ================================================================= */
         .sidebar {
             width: var(--sidebar-width);
             min-height: 100vh;
@@ -26,53 +40,71 @@
             position: fixed;
             top: 0; left: 0;
             z-index: 1000;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease; /* Animación para colapso en móviles */
         }
+
+        /* Encabezado del sidebar: muestra el logo y nombre del sistema */
         .sidebar-brand {
             padding: 1.5rem 1.25rem;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .sidebar-brand h5 { color: #fff; font-weight: 700; margin: 0; font-size: 1.1rem; }
         .sidebar-brand small { color: rgba(255,255,255,0.6); font-size: 0.75rem; }
+
+        /* Contenedor circular para el ícono del logo */
         .sidebar-logo { width: 40px; height: 40px; background: rgba(255,255,255,0.15);
             border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+
+        /* Títulos de sección del sidebar (ej: "PRINCIPAL", "CONFIGURACIÓN") */
         .nav-section-title {
             color: rgba(255,255,255,0.4); font-size: 0.7rem; font-weight: 700;
             text-transform: uppercase; letter-spacing: 0.1em;
             padding: 1rem 1.25rem 0.4rem;
         }
+
+        /* Estilos de cada enlace de navegación del sidebar */
         .sidebar .nav-link {
             color: rgba(255,255,255,0.75); padding: 0.6rem 1.25rem;
             border-radius: 8px; margin: 2px 8px;
             display: flex; align-items: center; gap: 0.75rem;
             font-size: 0.9rem; transition: all 0.2s;
         }
+        /* Estado hover y activo: resalta el módulo actual */
         .sidebar .nav-link:hover, .sidebar .nav-link.active {
             color: #fff; background: rgba(255,255,255,0.15);
         }
         .sidebar .nav-link i { font-size: 1.1rem; width: 20px; text-align: center; }
 
-        /* MAIN */
+        /* =================================================================
+           MAIN CONTENT - Área de contenido principal
+           Usa margin-left para compensar el ancho del sidebar fijo.
+        ================================================================= */
         .main-content {
             margin-left: var(--sidebar-width);
             min-height: 100vh;
         }
+
+        /* Barra superior: título de la página y botones de acción principales */
         .topbar {
             background: #fff;
             border-bottom: 1px solid #E3E8EF;
             padding: 0.75rem 1.5rem;
             display: flex; align-items: center; justify-content: space-between;
-            position: sticky; top: 0; z-index: 100;
+            position: sticky; top: 0; z-index: 100; /* Sticky para visibilidad al hacer scroll */
         }
         .topbar-title { font-weight: 700; color: #1A2332; font-size: 1.1rem; }
         .page-content { padding: 1.5rem; }
 
-        /* CARDS */
+        /* =================================================================
+           TARJETAS DE ESTADÍSTICAS (dashboard)
+           Cada tarjeta muestra un KPI del sistema con ícono y valor numérico.
+        ================================================================= */
         .stat-card {
             background: #fff; border-radius: 12px; padding: 1.25rem;
             border: 1px solid #E3E8EF; transition: box-shadow 0.2s;
         }
         .stat-card:hover { box-shadow: 0 4px 20px rgba(21,101,192,0.1); }
+        /* Contenedor circular del ícono en cada tarjeta */
         .stat-icon {
             width: 48px; height: 48px; border-radius: 12px;
             display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
@@ -80,8 +112,12 @@
         .stat-value { font-size: 2rem; font-weight: 700; color: #1A2332; }
         .stat-label { color: #6B7280; font-size: 0.85rem; }
 
-        /* TABLE */
+        /* =================================================================
+           TARJETAS DE TABLA
+           Contenedor estilizado para tablas de datos del sistema.
+        ================================================================= */
         .table-card { background: #fff; border-radius: 12px; border: 1px solid #E3E8EF; overflow: hidden; }
+        /* Encabezados de tabla: fondo gris claro, texto en mayúsculas */
         .table thead th {
             background: #F8FAFC; color: #374151;
             font-weight: 600; font-size: 0.8rem; text-transform: uppercase;
@@ -90,30 +126,47 @@
         .table td { padding: 0.875rem 1rem; vertical-align: middle; color: #374151; font-size: 0.9rem; }
         .table tbody tr:hover { background: #F8FAFC; }
 
-        /* BADGES */
-        .badge-activo { background: #DCFCE7; color: #166534; }
-        .badge-inactivo { background: #FEE2E2; color: #991B1B; }
-        .badge-revision { background: #FEF3C7; color: #92400E; }
-        .badge-archivado { background: #F3F4F6; color: #374151; }
+        /* =================================================================
+           BADGES DE ESTADO DE DOCUMENTOS
+           Código de colores semántico para identificar visualmente el estado.
+           activo=verde | inactivo=rojo | revision=amarillo | archivado=gris
+        ================================================================= */
+        .badge-activo    { background: #DCFCE7; color: #166534; } /* Verde: disponible y vigente */
+        .badge-inactivo  { background: #FEE2E2; color: #991B1B; } /* Rojo: desactivado */
+        .badge-revision  { background: #FEF3C7; color: #92400E; } /* Amarillo: en proceso de revisión */
+        .badge-archivado { background: #F3F4F6; color: #374151; } /* Gris: histórico/archivado */
 
-        /* FORMS */
+        /* Tarjeta de formulario: contenedor blanco con borde para formularios y fichas */
         .form-card { background: #fff; border-radius: 12px; border: 1px solid #E3E8EF; padding: 1.5rem; }
+
+        /* Sobrescribe color del botón primario con el azul del sistema */
         .btn-primary { background: var(--primary); border-color: var(--primary); }
         .btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
 
-        /* RESPONSIVE */
+        /* =================================================================
+           DISEÑO RESPONSIVO
+           En pantallas < 768px el sidebar se oculta fuera de pantalla.
+           El botón de hamburguesa (toggle) lo muestra/oculta.
+        ================================================================= */
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.show { transform: translateX(0); }
             .main-content { margin-left: 0; }
         }
     </style>
+    <!-- Bloque para CSS adicional específico de cada vista -->
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+
 {% if user.is_authenticated %}
-<!-- SIDEBAR -->
+<!-- ===========================================================
+     SIDEBAR - Barra lateral de navegación principal
+     Solo se muestra cuando el usuario tiene sesión activa.
+     Contiene los módulos del sistema organizados por sección.
+=========================================================== -->
 <nav class="sidebar">
+    <!-- Encabezado del sidebar: logo + nombre del sistema -->
     <div class="sidebar-brand d-flex align-items-center gap-3">
         <div class="sidebar-logo">
             <i class="bi bi-folder2-open text-white fs-5"></i>
@@ -123,20 +176,26 @@
             <small>Sistema Documental</small>
         </div>
     </div>
+
+    <!-- Sección principal de navegación -->
     <div class="nav-section-title">Principal</div>
     <ul class="nav flex-column">
+        <!-- Dashboard: resumen del sistema con estadísticas -->
         <li class="nav-item">
+            <!-- La clase "active" se aplica dinámicamente cuando la URL coincide con el módulo -->
             <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
                href="{% url 'dashboard' %}">
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
         </li>
+        <!-- Módulo de documentos: CRUD completo de archivos -->
         <li class="nav-item">
             <a class="nav-link {% if 'documento' in request.resolver_match.url_name %}active{% endif %}"
                href="{% url 'documento_list' %}">
                 <i class="bi bi-file-earmark-text"></i> Documentos
             </a>
         </li>
+        <!-- Historial: registro de auditoría de todas las acciones -->
         <li class="nav-item">
             <a class="nav-link {% if 'historial' in request.resolver_match.url_name %}active{% endif %}"
                href="{% url 'historial_list' %}">
@@ -144,14 +203,18 @@
             </a>
         </li>
     </ul>
+
+    <!-- Sección de configuración del sistema -->
     <div class="nav-section-title">Configuración</div>
     <ul class="nav flex-column">
+        <!-- Clasificaciones: categorías para organizar documentos -->
         <li class="nav-item">
             <a class="nav-link {% if 'clasificacion' in request.resolver_match.url_name %}active{% endif %}"
                href="{% url 'clasificacion_list' %}">
                 <i class="bi bi-tags"></i> Clasificaciones
             </a>
         </li>
+        <!-- Usuarios: gestión de cuentas y roles (solo Administrador) -->
         <li class="nav-item">
             <a class="nav-link {% if 'usuario' in request.resolver_match.url_name %}active{% endif %}"
                href="{% url 'usuario_list' %}">
@@ -159,16 +222,21 @@
             </a>
         </li>
     </ul>
+
+    <!-- Panel de información del usuario autenticado en la parte inferior del sidebar -->
     <div class="mt-auto p-3" style="position: absolute; bottom: 0; width: 100%;">
         <div class="d-flex align-items-center gap-2 p-2 rounded" style="background: rgba(255,255,255,0.1);">
+            <!-- Avatar circular del usuario -->
             <div class="rounded-circle bg-white d-flex align-items-center justify-content-center"
                  style="width:32px;height:32px;min-width:32px;">
                 <i class="bi bi-person-fill" style="color: var(--primary);"></i>
             </div>
+            <!-- Nombre y rol del usuario: datos inyectados por el contexto de Django -->
             <div class="overflow-hidden">
                 <div class="text-white fw-semibold text-truncate" style="font-size:0.8rem;">{{ user.nombre }}</div>
                 <div style="color:rgba(255,255,255,0.5);font-size:0.7rem;">{{ user.idRol.nombreRol|default:"Sin rol" }}</div>
             </div>
+            <!-- Botón de cierre de sesión: redirige a /logout/ y limpia la sesión -->
             <a href="{% url 'logout' %}" class="ms-auto text-white" title="Cerrar sesión">
                 <i class="bi bi-box-arrow-right"></i>
             </a>
@@ -176,36 +244,55 @@
     </div>
 </nav>
 
-<!-- MAIN -->
+<!-- ===========================================================
+     MAIN CONTENT - Área de contenido principal
+     Se extiende a todo el ancho menos el sidebar (margin-left).
+=========================================================== -->
 <div class="main-content">
+    <!-- Barra superior: muestra el título de la página y botones de acción contextuales -->
     <div class="topbar">
         <div class="d-flex align-items-center gap-3">
-            <button class="btn btn-sm d-md-none" id="sidebarToggle" onclick="document.querySelector('.sidebar').classList.toggle('show')">
+            <!-- Botón hamburguesa: solo visible en pantallas móviles para abrir/cerrar sidebar -->
+            <button class="btn btn-sm d-md-none" id="sidebarToggle"
+                    onclick="document.querySelector('.sidebar').classList.toggle('show')">
                 <i class="bi bi-list fs-5"></i>
             </button>
+            <!-- Bloque DTL: cada vista inyecta su propio título de página aquí -->
             <span class="topbar-title">{% block page_title %}{% endblock %}</span>
         </div>
         <div class="d-flex align-items-center gap-2">
+            <!-- Bloque DTL: botones de acción de la página (Nuevo, Exportar, etc.) -->
             {% block topbar_actions %}{% endblock %}
         </div>
     </div>
+
+    <!-- Área de contenido de la página -->
     <div class="page-content">
+        <!-- Sistema de mensajes de Django: muestra notificaciones de éxito, error, etc.
+             Los mensajes son generados por las vistas tras operaciones CRUD -->
         {% if messages %}
             {% for msg in messages %}
             <div class="alert alert-{{ msg.tags|default:'info' }} alert-dismissible fade show" role="alert">
                 {{ msg }}
+                <!-- Botón para cerrar la alerta manualmente -->
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
             {% endfor %}
         {% endif %}
+
+        <!-- Bloque principal: cada plantilla hija inserta su contenido aquí -->
         {% block content %}{% endblock %}
     </div>
 </div>
+
 {% else %}
+<!-- Bloque para vistas sin autenticación (login): sin sidebar ni topbar -->
 {% block auth_content %}{% endblock %}
 {% endif %}
 
+<!-- Bootstrap Bundle JS: incluye Popper.js para modales, dropdowns y tooltips -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bloque DTL: JavaScript adicional específico de cada vista -->
 {% block extra_js %}{% endblock %}
 </body>
 </html>

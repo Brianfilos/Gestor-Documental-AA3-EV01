@@ -1,0 +1,92 @@
+/* Ajustes del Gestor Documental sobre la plantilla SaaS Application (Grayic) */
+
+/* Marca en texto: reemplaza el logo "Shades" de la plantilla */
+.brand-text {
+  display: inline-flex;
+  align-items: center;
+  color: #1f1f1f;
+  font-family: 'Karla', sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  white-space: nowrap;
+}
+
+.brand-text:hover {
+  color: #1f1f1f;
+  text-decoration: none;
+}
+
+.brand-text i {
+  margin-right: 9px;
+  color: #f46f7c;
+  font-size: 24px;
+}
+
+/* El bloque de precios se usa para presentar los módulos del sistema */
+.pricing-card .card-head h2.modulo-nombre {
+  color: #1f1f1f;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -1.2px;
+  line-height: 60px;
+}
+
+/* Iconos de Font Awesome en el menú móvil */
+.mean-container a.meanmenu-reveal {
+  font-size: 22px;
+}
+
+/* Evita que el enlace de inicio de sesión se parta en dos líneas */
+.header-btns a {
+  white-space: nowrap;
+}
+
+/* Sección "App móvil": marco de teléfono con la versión web de la app */
+.app-movil-section {
+  padding: 110px 0 120px;
+  background: #f8f8f8;
+}
+
+.app-movil-section .content-left-content {
+  padding-top: 40px;
+}
+
+.phone-frame {
+  position: relative;
+  width: 340px;
+  max-width: 100%;
+  height: 700px;
+  margin: 0 auto;
+  padding: 14px;
+  border-radius: 44px;
+  background: #1f1f1f;
+  box-shadow: 0 30px 60px rgba(31, 31, 31, 0.25);
+}
+
+.phone-frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 32px;
+  background: #F5F7FA;
+}
+
+.phone-notch {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  z-index: 2;
+  width: 120px;
+  height: 22px;
+  margin-left: -60px;
+  border-radius: 0 0 14px 14px;
+  background: #1f1f1f;
+}
+
+@media (max-width: 991px) {
+  .app-movil-section .content-left-content {
+    padding-top: 50px;
+  }
+}

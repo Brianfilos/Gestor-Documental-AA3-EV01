@@ -1,42 +1,78 @@
 {% extends 'base.html' %}
+{% comment %}
+  Plantilla: documentos/historial.html
+  Módulo   : Historial de actividad del sistema
+  Vista    : documentos/views.py → historial_list()
+  URL      : /historial/
+  Función  : Registro de auditoría de solo lectura. Muestra todas las
+             acciones realizadas sobre documentos (crear, editar, eliminar,
+             revisar) con el usuario responsable y la fecha/hora.
+  Contexto : historial (QuerySet de HistorialDocumento ordenado por fecha desc)
+{% endcomment %}
+
 {% block title %}Historial - Gestor Documental{% endblock %}
 {% block page_title %}Historial de Actividad{% endblock %}
 
 {% block content %}
+<!-- ===================================================================
+     TABLA DE HISTORIAL DE ACTIVIDAD
+     Vista de solo lectura: no tiene botones de creación ni edición.
+     Los registros se generan automáticamente por las vistas Django
+     al realizar operaciones CRUD sobre documentos.
+=================================================================== -->
 <div class="table-card">
+    <!-- Encabezado con contador total de registros en el historial -->
     <div class="d-flex align-items-center p-3 border-bottom">
         <i class="bi bi-clock-history me-2" style="color:#1565C0;font-size:1.2rem;"></i>
         <h6 class="mb-0 fw-bold">Historial de Documentos</h6>
+        <!-- |length muestra la cantidad total de registros del QuerySet -->
         <span class="badge ms-2" style="background:#EFF6FF;color:#1565C0;">{{ historial|length }}</span>
     </div>
+
+    <!-- Wrapper responsivo: habilita scroll horizontal en pantallas pequeñas -->
     <div class="table-responsive">
         <table class="table mb-0">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Documento</th>
-                    <th>Acción</th>
-                    <th>Usuario</th>
-                    <th>Fecha y Hora</th>
+                    <th>#</th>          <!-- ID del registro de historial -->
+                    <th>Documento</th>  <!-- Nombre del documento afectado -->
+                    <th>Acción</th>     <!-- Tipo de operación realizada -->
+                    <th>Usuario</th>    <!-- Quién realizó la acción -->
+                    <th>Fecha y Hora</th> <!-- Cuándo ocurrió -->
                 </tr>
             </thead>
             <tbody>
+                <!-- Itera sobre cada registro del QuerySet historial
+                     Ordenado por fechaAccion descendente (más reciente primero) -->
                 {% for h in historial %}
                 <tr>
+                    <!-- ID del registro de auditoría -->
                     <td class="text-muted">{{ h.idHistorial }}</td>
+
+                    <!-- Enlace al detalle del documento que fue afectado -->
                     <td>
-                        <a href="{% url 'documento_detail' h.idDocumento.pk %}" class="fw-semibold text-decoration-none">
+                        <a href="{% url 'documento_detail' h.idDocumento.pk %}"
+                           class="fw-semibold text-decoration-none">
                             {{ h.idDocumento.titulo }}
                         </a>
                     </td>
+
+                    <!-- Tipo de acción: badge azul con descripción de la operación -->
                     <td>
                         <span class="badge" style="background:#EFF6FF;color:#1565C0;">{{ h.accion }}</span>
                     </td>
+
+                    <!-- Nombre del usuario que ejecutó la acción -->
                     <td class="text-muted">{{ h.idUsuario.nombre }}</td>
+
+                    <!-- Fecha y hora de la acción con formato legible -->
                     <td class="text-muted">{{ h.fechaAccion|date:"d/m/Y H:i" }}</td>
                 </tr>
+                <!-- Estado vacío: cuando no hay registros en el historial -->
                 {% empty %}
-                <tr><td colspan="5" class="text-center text-muted py-4">Sin historial de actividad.</td></tr>
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">Sin historial de actividad.</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>

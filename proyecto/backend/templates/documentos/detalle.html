@@ -1,7 +1,18 @@
 {% extends 'base.html' %}
+{% comment %}
+  Plantilla: documentos/detalle.html
+  Módulo   : Gestión de documentos - Vista de detalle
+  Vista    : documentos/views.py → documento_detail()
+  URL      : /documentos/<id>/
+  Función  : Muestra todos los metadatos de un documento, permite descargar
+             el archivo, agregar revisiones/comentarios y consultar el historial.
+  Contexto : documento, revisiones (QuerySet), historial (QuerySet), form_revision
+{% endcomment %}
+
 {% block title %}{{ documento.titulo }} - Gestor Documental{% endblock %}
 {% block page_title %}Detalle de Documento{% endblock %}
 
+<!-- Botones de acción en el topbar: Editar y volver al listado -->
 {% block topbar_actions %}
 <a href="{% url 'documento_edit' documento.pk %}" class="btn btn-outline-primary btn-sm me-1">
     <i class="bi bi-pencil me-1"></i>Editar
@@ -12,27 +23,43 @@
 {% endblock %}
 
 {% block content %}
+<!-- Layout de dos columnas:
+     - Columna izquierda (col-lg-8): información del documento y revisiones
+     - Columna derecha (col-lg-4): historial de actividad (sidebar) -->
 <div class="row g-3">
-    <!-- Información del documento -->
+
+    <!-- ===================================================================
+         COLUMNA PRINCIPAL: Información del documento y revisiones
+    =================================================================== -->
     <div class="col-lg-8">
+
+        <!-- Tarjeta de metadatos del documento -->
         <div class="form-card mb-3">
             <div class="d-flex align-items-start justify-content-between mb-3">
                 <div>
+                    <!-- Título del documento como encabezado principal -->
                     <h5 class="fw-bold mb-1">{{ documento.titulo }}</h5>
+                    <!-- Badges de estado y clasificación junto al título -->
                     <span class="badge badge-{{ documento.estado }} me-2">{{ documento.get_estado_display }}</span>
                     <span class="badge" style="background:#EFF6FF;color:#1565C0;">
                         {{ documento.idClasificacion.nombreClasificacion }}
                     </span>
                 </div>
+                <!-- Botón de descarga: solo visible si el documento tiene archivo adjunto -->
                 {% if documento.archivo %}
+                <!-- download: atributo HTML5 que fuerza la descarga en lugar de abrir en el navegador -->
                 <a href="{{ documento.archivo.url }}" class="btn btn-sm btn-success" download>
                     <i class="bi bi-download me-1"></i>Descargar
                 </a>
                 {% endif %}
             </div>
+
+            <!-- Descripción del documento (opcional) -->
             {% if documento.descripcion %}
             <p class="text-muted mb-3">{{ documento.descripcion }}</p>
             {% endif %}
+
+            <!-- Metadatos secundarios: fecha y usuario que cargó el documento -->
             <div class="row g-2">
                 <div class="col-sm-6">
                     <small class="text-muted d-block">Fecha de carga</small>
@@ -45,36 +72,51 @@
             </div>
         </div>
 
-        <!-- Revisiones -->
+        <!-- ===============================================================
+             SECCIÓN DE REVISIONES
+             Lista de comentarios y revisiones agregadas al documento.
+             Cada revisión tiene: usuario, fecha y comentario.
+        =============================================================== -->
         <div class="form-card">
             <h6 class="fw-bold mb-3 pb-2 border-bottom">
                 <i class="bi bi-chat-text me-2" style="color:#1565C0;"></i>Revisiones
+                <!-- Contador de revisiones con filtro |length -->
                 <span class="badge ms-1" style="background:#EFF6FF;color:#1565C0;">{{ revisiones|length }}</span>
             </h6>
+
+            <!-- Lista de revisiones existentes -->
             {% for revision in revisiones %}
             <div class="d-flex gap-3 mb-3 pb-3 border-bottom">
+                <!-- Avatar del revisor -->
                 <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
                      style="width:36px;height:36px;background:#EFF6FF;">
                     <i class="bi bi-person-fill" style="color:#1565C0;"></i>
                 </div>
                 <div>
+                    <!-- Nombre del usuario revisor y fecha de revisión -->
                     <div class="fw-semibold" style="font-size:0.875rem;">{{ revision.idUsuario.nombre }}</div>
                     <div class="text-muted" style="font-size:0.8rem;">{{ revision.fechaRevision|date:"d/m/Y" }}</div>
+                    <!-- Comentario de la revisión (opcional) -->
                     {% if revision.comentario %}
                     <p class="mb-0 mt-1" style="font-size:0.875rem;">{{ revision.comentario }}</p>
                     {% endif %}
                 </div>
             </div>
+            <!-- Mensaje cuando el documento no tiene revisiones -->
             {% empty %}
             <p class="text-muted text-center py-3">Sin revisiones aún.</p>
             {% endfor %}
 
-            <!-- Agregar revisión -->
+            <!-- ============================================================
+                 FORMULARIO PARA AGREGAR UNA NUEVA REVISIÓN
+                 Envía un POST a la URL revision_create con el ID del documento.
+                 Al guardar, cambia el estado del documento a "revision".
+            ============================================================ -->
             <div class="mt-3 pt-3 border-top">
                 <h6 class="fw-semibold mb-2" style="font-size:0.875rem;">Agregar revisión</h6>
                 <form method="post" action="{% url 'revision_create' documento.pk %}">
-                    {% csrf_token %}
-                    {{ form_revision.comentario }}
+                    {% csrf_token %} <!-- Token CSRF: protección contra Cross-Site Request Forgery -->
+                    {{ form_revision.comentario }} <!-- Campo de texto multilínea para el comentario -->
                     <button type="submit" class="btn btn-primary btn-sm mt-2">
                         <i class="bi bi-send me-1"></i>Enviar revisión
                     </button>
@@ -83,24 +125,34 @@
         </div>
     </div>
 
-    <!-- Historial -->
+    <!-- ===================================================================
+         COLUMNA LATERAL: Historial de actividad del documento
+         Registro cronológico de todas las acciones (crear, editar, revisar).
+         Solo lectura: se genera automáticamente por las vistas Django.
+    =================================================================== -->
     <div class="col-lg-4">
         <div class="form-card">
             <h6 class="fw-bold mb-3 pb-2 border-bottom">
                 <i class="bi bi-clock-history me-2" style="color:#1565C0;"></i>Historial
             </h6>
+            <!-- Contenedor con scroll para historiales extensos -->
             <div style="max-height:400px;overflow-y:auto;">
+                <!-- Iteración sobre cada registro del historial de este documento -->
                 {% for h in historial %}
                 <div class="d-flex gap-2 mb-3">
+                    <!-- Punto azul: indicador visual de línea de tiempo -->
                     <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
                          style="width:8px;height:8px;background:#1565C0;margin-top:6px;"></div>
                     <div>
+                        <!-- Acción realizada (ej: "Documento creado", "Revisión agregada") -->
                         <div style="font-size:0.8rem;font-weight:600;">{{ h.accion }}</div>
+                        <!-- Usuario que realizó la acción y fecha/hora -->
                         <div class="text-muted" style="font-size:0.75rem;">
                             {{ h.idUsuario.nombre }} · {{ h.fechaAccion|date:"d/m/Y H:i" }}
                         </div>
                     </div>
                 </div>
+                <!-- Estado vacío del historial -->
                 {% empty %}
                 <p class="text-muted text-center py-3" style="font-size:0.875rem;">Sin historial.</p>
                 {% endfor %}

@@ -1,25 +1,48 @@
 {% extends 'base.html' %}
+{% comment %}
+  Plantilla: documentos/confirmar_eliminar.html
+  Módulo   : Gestión de documentos - Confirmación de eliminación
+  Vista    : documentos/views.py → documento_delete()
+  URL      : /documentos/<id>/eliminar/
+  Función  : Página de confirmación antes de eliminar un documento permanentemente.
+             Implementa el patrón "doble confirmación" para evitar eliminaciones
+             accidentales. El POST definitivo ejecuta la eliminación en la BD.
+  Contexto : tipo ("documento"), objeto (título del documento a eliminar)
+{% endcomment %}
+
 {% block title %}Eliminar {{ tipo }} - Gestor Documental{% endblock %}
 {% block page_title %}Confirmar Eliminación{% endblock %}
 
 {% block content %}
+<!-- Centra el cuadro de confirmación: ocupa la mitad del ancho en MD+ -->
 <div class="row justify-content-center">
     <div class="col-md-6 col-lg-5">
         <div class="form-card text-center">
+
+            <!-- Ícono de advertencia: círculo rojo con triángulo de exclamación -->
             <div class="d-flex align-items-center justify-content-center mb-3"
                  style="width:64px;height:64px;background:#FEE2E2;border-radius:50%;margin:0 auto;">
                 <i class="bi bi-exclamation-triangle-fill text-danger fs-3"></i>
             </div>
+
+            <!-- Título dinámico: usa la variable "tipo" del contexto (ej: "documento") -->
             <h5 class="fw-bold mb-2">¿Eliminar {{ tipo }}?</h5>
+
+            <!-- Mensaje de advertencia con el nombre del objeto a eliminar -->
             <p class="text-muted mb-4">
                 ¿Estás seguro de que deseas eliminar <strong>{{ objeto }}</strong>?
                 Esta acción no se puede deshacer.
             </p>
+
+            <!-- Formulario de confirmación: el POST ejecuta la eliminación definitiva
+                 method="post": por seguridad las eliminaciones nunca se hacen por GET -->
             <form method="post" class="d-flex gap-2 justify-content-center">
-                {% csrf_token %}
+                {% csrf_token %} <!-- Token CSRF: obligatorio en formularios POST -->
+                <!-- Botón de confirmación: envía el POST y elimina el registro -->
                 <button type="submit" class="btn btn-danger">
                     <i class="bi bi-trash me-1"></i>Sí, eliminar
                 </button>
+                <!-- Cancelar: usa el historial del navegador para volver sin eliminar -->
                 <a href="javascript:history.back()" class="btn btn-outline-secondary">
                     <i class="bi bi-x me-1"></i>Cancelar
                 </a>

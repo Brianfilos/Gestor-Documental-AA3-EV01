@@ -1,7 +1,19 @@
 {% extends 'base.html' %}
+{% comment %}
+  Plantilla: documentos/clasificaciones.html
+  Módulo   : Gestión de clasificaciones de documentos
+  Vista    : documentos/views.py → clasificacion_list()
+  URL      : /clasificaciones/
+  Función  : Lista las categorías disponibles para clasificar documentos.
+             Permite crear nuevas clasificaciones y editar las existentes.
+             No tiene eliminación para preservar la integridad referencial.
+  Contexto : clasificaciones (QuerySet de ClasificacionDocumento)
+{% endcomment %}
+
 {% block title %}Clasificaciones - Gestor Documental{% endblock %}
 {% block page_title %}Clasificaciones{% endblock %}
 
+<!-- Botón en el topbar para crear una nueva clasificación -->
 {% block topbar_actions %}
 <a href="{% url 'clasificacion_create' %}" class="btn btn-primary btn-sm">
     <i class="bi bi-plus-lg me-1"></i>Nueva Clasificación
@@ -9,40 +21,61 @@
 {% endblock %}
 
 {% block content %}
+<!-- ===================================================================
+     TABLA DE CLASIFICACIONES
+     Las clasificaciones son las categorías con las que se organizan los
+     documentos del sistema (ej: Técnico, Legal, Administrativo, etc.)
+=================================================================== -->
 <div class="table-card">
+    <!-- Encabezado con contador de clasificaciones registradas -->
     <div class="d-flex align-items-center p-3 border-bottom">
         <i class="bi bi-tags me-2" style="color:#1565C0;font-size:1.2rem;"></i>
         <h6 class="mb-0 fw-bold">Clasificaciones de Documentos</h6>
+        <!-- |length cuenta el número de clasificaciones en el QuerySet -->
         <span class="badge ms-2" style="background:#EFF6FF;color:#1565C0;">{{ clasificaciones|length }}</span>
     </div>
+
+    <!-- Wrapper responsivo para la tabla -->
     <div class="table-responsive">
         <table class="table mb-0">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th>Acciones</th>
+                    <th>#</th>           <!-- ID de la clasificación en la BD -->
+                    <th>Nombre</th>      <!-- Nombre de la categoría -->
+                    <th>Descripción</th> <!-- Descripción opcional de la categoría -->
+                    <th>Acciones</th>    <!-- Solo "Editar" (sin eliminar) -->
                 </tr>
             </thead>
             <tbody>
+                <!-- Iteración sobre cada clasificación disponible en el sistema -->
                 {% for c in clasificaciones %}
                 <tr>
+                    <!-- ID de la clasificación (clave primaria) -->
                     <td class="text-muted">{{ c.idClasificacion }}</td>
+
+                    <!-- Nombre de la clasificación como badge azul para destacarla -->
                     <td>
                         <span class="badge" style="background:#EFF6FF;color:#1565C0;font-size:0.85rem;">
                             <i class="bi bi-tag me-1"></i>{{ c.nombreClasificacion }}
                         </span>
                     </td>
+
+                    <!-- Descripción: muestra "—" si no tiene descripción (filtro default) -->
                     <td class="text-muted">{{ c.descripcion|default:"—" }}</td>
+
+                    <!-- Botón de edición: redirige al formulario de edición -->
                     <td>
-                        <a href="{% url 'clasificacion_edit' c.pk %}" class="btn btn-sm btn-outline-primary" title="Editar">
+                        <a href="{% url 'clasificacion_edit' c.pk %}"
+                           class="btn btn-sm btn-outline-primary" title="Editar">
                             <i class="bi bi-pencil"></i>
                         </a>
                     </td>
                 </tr>
+                <!-- Estado vacío: mensaje cuando no hay clasificaciones registradas -->
                 {% empty %}
-                <tr><td colspan="4" class="text-center text-muted py-4">No hay clasificaciones.</td></tr>
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-4">No hay clasificaciones.</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>

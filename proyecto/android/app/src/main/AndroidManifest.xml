@@ -24,18 +24,25 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.MainActivity" android:exported="false" />
+        <!-- La actividad principal aporta su propia Toolbar, por lo que debe usar
+             el tema sin ActionBar para no duplicar la barra de acciones. -->
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.GestorDocumental.NoActionBar" />
 
         <activity
             android:name=".ui.documentos.DocumentoDetalleActivity"
             android:exported="false"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/Theme.GestorDocumental.NoActionBar" />
 
         <activity
             android:name=".ui.documentos.DocumentoFormActivity"
             android:exported="false"
             android:parentActivityName=".ui.MainActivity"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.GestorDocumental.NoActionBar" />
 
     </application>
 

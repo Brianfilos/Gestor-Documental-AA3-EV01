@@ -1,0 +1,21 @@
+# Servicio de Gunicorn para el Sistema Gestor Documental.
+# Copiar a /etc/systemd/system/gestor-documental.service y ejecutar:
+#   systemctl daemon-reload && systemctl enable --now gestor-documental
+
+[Unit]
+Description=Gestor Documental (Django + Gunicorn)
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/gestor-documental/proyecto/backend
+Environment=DJANGO_SETTINGS_MODULE=gestor_documental.settings_produccion
+ExecStart=/opt/gestor-documental/proyecto/backend/venv/bin/gunicorn gestor_documental.wsgi:application \
+    --bind 127.0.0.1:8001 --workers 3 --timeout 60 \
+    --access-logfile - --error-logfile -
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

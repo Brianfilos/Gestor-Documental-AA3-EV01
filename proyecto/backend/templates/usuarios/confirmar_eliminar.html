@@ -1,25 +1,48 @@
 {% extends 'base.html' %}
+{% comment %}
+  Plantilla: usuarios/confirmar_eliminar.html
+  Módulo   : Gestión de usuarios - Confirmación de eliminación
+  Vista    : usuarios/views.py → usuario_delete()
+  URL      : /usuarios/<id>/eliminar/
+  Función  : Página de confirmación antes de eliminar un usuario permanentemente.
+             Implementa el patrón "doble confirmación" para operaciones destructivas.
+             El POST definitivo elimina el usuario y sus datos asociados.
+  Contexto : tipo ("usuario"), objeto (nombre del usuario a eliminar)
+{% endcomment %}
+
 {% block title %}Eliminar - Gestor Documental{% endblock %}
 {% block page_title %}Confirmar Eliminación{% endblock %}
 
 {% block content %}
+<!-- Centra el cuadro de confirmación en pantalla -->
 <div class="row justify-content-center">
     <div class="col-md-6 col-lg-5">
         <div class="form-card text-center">
+
+            <!-- Ícono de advertencia visual: círculo rojo con triángulo -->
             <div class="d-flex align-items-center justify-content-center mb-3"
                  style="width:64px;height:64px;background:#FEE2E2;border-radius:50%;margin:0 auto;">
                 <i class="bi bi-exclamation-triangle-fill text-danger fs-3"></i>
             </div>
+
+            <!-- Título con el tipo de entidad a eliminar (ej: "usuario") -->
             <h5 class="fw-bold mb-2">¿Eliminar {{ tipo }}?</h5>
+
+            <!-- Advertencia irreversible: muestra el nombre del usuario afectado -->
             <p class="text-muted mb-4">
                 ¿Estás seguro de que deseas eliminar <strong>{{ objeto }}</strong>?
                 Esta acción no se puede deshacer.
             </p>
+
+            <!-- Formulario POST de confirmación: ejecuta la eliminación en la BD
+                 El GET para mostrar esta página no altera datos (patrón PRG seguro) -->
             <form method="post" class="d-flex gap-2 justify-content-center">
-                {% csrf_token %}
+                {% csrf_token %} <!-- Token CSRF obligatorio para el formulario POST -->
+                <!-- Confirmar eliminación: envía el POST a la vista usuario_delete -->
                 <button type="submit" class="btn btn-danger">
                     <i class="bi bi-trash me-1"></i>Sí, eliminar
                 </button>
+                <!-- Cancelar: regresa a la página anterior sin hacer cambios -->
                 <a href="javascript:history.back()" class="btn btn-outline-secondary">
                     <i class="bi bi-x me-1"></i>Cancelar
                 </a>

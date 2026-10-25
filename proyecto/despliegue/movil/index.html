@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<!--
+  Versión web de la aplicación móvil del Gestor Documental.
+  Replica las pantallas de la app Android (proyecto/android) y consume la misma
+  API REST (/api/) con autenticación JWT. Se publica en /movil/ y la página
+  principal la muestra dentro de un marco de teléfono.
+-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0D47A1">
+  <title>GestorDoc · App móvil</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <div id="app"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,15 +1,29 @@
 {% extends 'base.html' %}
+{% comment %}
+  Plantilla: login.html
+  Módulo   : Autenticación de usuarios
+  Vista    : usuarios/views.py → login_view()
+  URL      : /login/
+  Hereda   : base.html (usa bloque auth_content, sin sidebar)
+  Función  : Punto de entrada al sistema. Valida correo + contraseña
+             y redirige al dashboard si las credenciales son correctas.
+{% endcomment %}
 
 {% block title %}Iniciar Sesión - Gestor Documental{% endblock %}
 
 {% block auth_content %}
+<!-- Contenedor de pantalla completa con gradiente azul corporativo -->
 <div class="min-vh-100 d-flex align-items-center justify-content-center"
      style="background: linear-gradient(135deg, #0D47A1 0%, #1565C0 50%, #1976D2 100%);">
+
     <div class="container">
         <div class="row justify-content-center">
+            <!-- Columna central responsiva: ocupa más espacio en pantallas pequeñas -->
             <div class="col-12 col-sm-10 col-md-7 col-lg-5 col-xl-4">
-                <!-- Logo y título -->
+
+                <!-- Sección del logo y nombre del sistema -->
                 <div class="text-center mb-4">
+                    <!-- Ícono del sistema sobre fondo semitransparente -->
                     <div class="d-inline-flex align-items-center justify-content-center
                                 rounded-3 mb-3"
                          style="width:72px;height:72px;background:rgba(255,255,255,0.15);">
@@ -19,7 +33,7 @@
                     <p class="text-white-50 mb-0">Sistema Gestor Documental</p>
                 </div>
 
-                <!-- Card -->
+                <!-- Tarjeta blanca del formulario de login -->
                 <div class="card border-0 shadow-lg rounded-4 p-4">
                     <div class="card-body p-0">
                         <h5 class="fw-bold mb-1 text-center" style="color:#1A2332;">Bienvenido</h5>
@@ -27,29 +41,39 @@
                             Ingresa tus credenciales para continuar
                         </p>
 
+                        <!-- Mensaje de error: se muestra cuando las credenciales son inválidas -->
                         {% if form.non_field_errors %}
                         <div class="alert alert-danger py-2">
                             <i class="bi bi-exclamation-circle me-2"></i>{{ form.non_field_errors.0 }}
                         </div>
                         {% endif %}
 
+                        <!-- Formulario de autenticación
+                             method="post": envío seguro de credenciales
+                             novalidate: delega la validación al servidor Django -->
                         <form method="post" novalidate>
-                            {% csrf_token %}
+                            {% csrf_token %} <!-- Token de seguridad CSRF obligatorio en formularios POST -->
+
+                            <!-- Campo de correo electrónico -->
                             <div class="mb-3">
                                 <label class="form-label fw-semibold" style="font-size:0.875rem;">
                                     <i class="bi bi-envelope me-1"></i>Correo electrónico
                                 </label>
-                                {{ form.username }}
+                                {{ form.username }} <!-- El campo "username" mapea al correo en el modelo Usuario -->
                                 {% if form.username.errors %}
                                 <div class="text-danger" style="font-size:0.8rem;">{{ form.username.errors.0 }}</div>
                                 {% endif %}
                             </div>
+
+                            <!-- Campo de contraseña con botón para mostrar/ocultar -->
                             <div class="mb-4">
                                 <label class="form-label fw-semibold" style="font-size:0.875rem;">
                                     <i class="bi bi-lock me-1"></i>Contraseña
                                 </label>
+                                <!-- input-group combina el campo con el botón toggle -->
                                 <div class="input-group">
                                     {{ form.password }}
+                                    <!-- Botón toggle: cambia type="password" ↔ type="text" -->
                                     <button class="btn btn-outline-secondary" type="button" id="togglePass">
                                         <i class="bi bi-eye" id="eyeIcon"></i>
                                     </button>
@@ -58,6 +82,8 @@
                                 <div class="text-danger" style="font-size:0.8rem;">{{ form.password.errors.0 }}</div>
                                 {% endif %}
                             </div>
+
+                            <!-- Botón de envío del formulario -->
                             <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">
                                 <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
                             </button>
@@ -65,6 +91,7 @@
                     </div>
                 </div>
 
+                <!-- Pie de página con año de copyright -->
                 <p class="text-center text-white-50 mt-3" style="font-size:0.75rem;">
                     © 2024 Sistema Gestor Documental
                 </p>
@@ -74,16 +101,21 @@
 </div>
 
 <script>
-document.getElementById('togglePass').addEventListener('click', function() {
-    const input = document.querySelector('input[name="password"]');
-    const icon = document.getElementById('eyeIcon');
-    if (input.type === 'password') {
-        input.type = 'text';
-        icon.className = 'bi bi-eye-slash';
-    } else {
-        input.type = 'password';
-        icon.className = 'bi bi-eye';
-    }
-});
+    /**
+     * Toggle de visibilidad de contraseña.
+     * Alterna el tipo del input entre "password" (oculto) y "text" (visible).
+     * Cambia el ícono entre ojo abierto (bi-eye) y ojo tachado (bi-eye-slash).
+     */
+    document.getElementById('togglePass').addEventListener('click', function() {
+        const input = document.querySelector('input[name="password"]');
+        const icon = document.getElementById('eyeIcon');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'bi bi-eye-slash'; /* Ojo tachado = contraseña visible */
+        } else {
+            input.type = 'password';
+            icon.className = 'bi bi-eye'; /* Ojo abierto = contraseña oculta */
+        }
+    });
 </script>
 {% endblock %}

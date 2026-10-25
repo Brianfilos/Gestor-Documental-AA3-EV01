@@ -1,7 +1,20 @@
 {% extends 'base.html' %}
+{% comment %}
+  Plantilla: usuarios/lista.html
+  Módulo   : Gestión de usuarios del sistema
+  Vista    : usuarios/views.py → usuario_list()
+  URL      : /usuarios/
+  Función  : Administración de cuentas de usuario. Muestra todos los usuarios
+             con su nombre, correo, rol asignado y estado de la cuenta.
+             Permite editar y eliminar usuarios.
+             Solo accesible para usuarios con rol Administrador.
+  Contexto : usuarios (QuerySet de Usuario con select_related('idRol'))
+{% endcomment %}
+
 {% block title %}Usuarios - Gestor Documental{% endblock %}
 {% block page_title %}Gestión de Usuarios{% endblock %}
 
+<!-- Botón del topbar para registrar un nuevo usuario en el sistema -->
 {% block topbar_actions %}
 <a href="{% url 'usuario_create' %}" class="btn btn-primary btn-sm">
     <i class="bi bi-person-plus me-1"></i>Nuevo Usuario
@@ -9,30 +22,44 @@
 {% endblock %}
 
 {% block content %}
+<!-- ===================================================================
+     TABLA DE USUARIOS DEL SISTEMA
+     Muestra todas las cuentas registradas con su información básica.
+     Los roles determinan los permisos: Administrador > Editor > Revisor > Visualizador
+=================================================================== -->
 <div class="table-card">
+    <!-- Encabezado con contador total de usuarios registrados -->
     <div class="d-flex align-items-center p-3 border-bottom">
         <i class="bi bi-people me-2" style="color:#1565C0;font-size:1.2rem;"></i>
         <h6 class="mb-0 fw-bold">Lista de Usuarios</h6>
+        <!-- |length: cuenta el número de usuarios en el QuerySet -->
         <span class="badge ms-2" style="background:#EFF6FF;color:#1565C0;">{{ usuarios|length }}</span>
     </div>
+
+    <!-- Wrapper responsivo para la tabla -->
     <div class="table-responsive">
         <table class="table mb-0">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Rol</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
+                    <th>#</th>        <!-- ID del usuario en la BD -->
+                    <th>Nombre</th>   <!-- Nombre completo con avatar -->
+                    <th>Correo</th>   <!-- Correo electrónico (usado para login) -->
+                    <th>Rol</th>      <!-- Rol asignado (define permisos) -->
+                    <th>Estado</th>   <!-- Activo / Inactivo -->
+                    <th>Acciones</th> <!-- Editar / Eliminar -->
                 </tr>
             </thead>
             <tbody>
+                <!-- Iteración sobre cada usuario registrado en el sistema -->
                 {% for usuario in usuarios %}
                 <tr>
+                    <!-- ID del usuario (clave primaria) -->
                     <td class="text-muted">{{ usuario.idUsuario }}</td>
+
+                    <!-- Nombre con avatar circular como identificador visual -->
                     <td>
                         <div class="d-flex align-items-center gap-2">
+                            <!-- Avatar circular con ícono de persona -->
                             <div class="rounded-circle d-flex align-items-center justify-content-center"
                                  style="width:32px;height:32px;background:#EFF6FF;min-width:32px;">
                                 <i class="bi bi-person-fill" style="color:#1565C0;"></i>
@@ -40,32 +67,50 @@
                             <span class="fw-semibold">{{ usuario.nombre }}</span>
                         </div>
                     </td>
+
+                    <!-- Correo electrónico del usuario (usado como credencial de login) -->
                     <td class="text-muted">{{ usuario.correo }}</td>
+
+                    <!-- Rol del usuario: badge morado claro -->
                     <td>
                         {% if usuario.idRol %}
+                        <!-- Muestra el nombre del rol si tiene uno asignado -->
                         <span class="badge" style="background:#F5F3FF;color:#5B21B6;">{{ usuario.idRol.nombreRol }}</span>
                         {% else %}
+                        <!-- Guión si el usuario no tiene rol asignado -->
                         <span class="text-muted">—</span>
                         {% endif %}
                     </td>
+
+                    <!-- Estado de la cuenta: badge con color semántico (verde=activo, rojo=inactivo) -->
                     <td>
+                        <!-- badge-{{ usuario.estado }} aplica la clase de color correspondiente -->
                         <span class="badge badge-{{ usuario.estado }}">
-                            {{ usuario.estado|capfirst }}
+                            {{ usuario.estado|capfirst }} <!-- capfirst: primera letra en mayúscula -->
                         </span>
                     </td>
+
+                    <!-- Botones de acción para cada usuario -->
                     <td>
                         <div class="d-flex gap-1">
-                            <a href="{% url 'usuario_edit' usuario.pk %}" class="btn btn-sm btn-outline-primary" title="Editar">
+                            <!-- Editar: carga el formulario con los datos del usuario -->
+                            <a href="{% url 'usuario_edit' usuario.pk %}"
+                               class="btn btn-sm btn-outline-primary" title="Editar">
                                 <i class="bi bi-pencil"></i>
                             </a>
-                            <a href="{% url 'usuario_delete' usuario.pk %}" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                            <!-- Eliminar: redirige a la confirmación antes de borrar -->
+                            <a href="{% url 'usuario_delete' usuario.pk %}"
+                               class="btn btn-sm btn-outline-danger" title="Eliminar">
                                 <i class="bi bi-trash"></i>
                             </a>
                         </div>
                     </td>
                 </tr>
+                <!-- Estado vacío: mensaje cuando no hay usuarios registrados -->
                 {% empty %}
-                <tr><td colspan="6" class="text-center text-muted py-4">No hay usuarios registrados.</td></tr>
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">No hay usuarios registrados.</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>

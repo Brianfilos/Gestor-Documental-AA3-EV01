@@ -1,34 +1,69 @@
 {% extends 'base.html' %}
+{% comment %}
+  Plantilla: documentos/formulario.html
+  Módulo   : Gestión de documentos - Formulario crear/editar
+  Vista    : documentos/views.py → documento_create() / documento_edit()
+  URLs     : /documentos/crear/  |  /documentos/<id>/editar/
+  Función  : Formulario reutilizable para crear nuevos documentos o editar
+             documentos existentes. La variable "accion" cambia el texto
+             del título y botón según si es creación o edición.
+  Contexto : form (DocumentoForm), accion ("Crear" o "Editar")
+{% endcomment %}
+
 {% block title %}{{ accion }} Documento - Gestor Documental{% endblock %}
 {% block page_title %}{{ accion }} Documento{% endblock %}
 
 {% block content %}
+<!-- Centra el formulario: ocupa 7/12 columnas en pantallas grandes -->
 <div class="row justify-content-center">
     <div class="col-lg-7">
         <div class="form-card">
+            <!-- Encabezado del formulario con título dinámico -->
             <h6 class="fw-bold mb-4 pb-2 border-bottom">
                 <i class="bi bi-file-earmark-text me-2" style="color:#1565C0;"></i>{{ accion }} Documento
             </h6>
+
+            <!-- Formulario principal
+                 method="post"                   : Envío seguro de datos al servidor
+                 enctype="multipart/form-data"   : Obligatorio para subida de archivos (campo archivo)
+                 novalidate                       : Delega la validación al servidor Django (no HTML5 nativo) -->
             <form method="post" enctype="multipart/form-data" novalidate>
-                {% csrf_token %}
+                {% csrf_token %} <!-- Token CSRF: requerido en todos los formularios POST de Django -->
+
+                <!-- Itera sobre cada campo del formulario DocumentoForm
+                     Esto evita repetir código para cada campo individualmente -->
                 {% for field in form %}
                 <div class="mb-3">
+                    <!-- Etiqueta del campo con indicador (*) para campos requeridos -->
                     <label class="form-label fw-semibold" style="font-size:0.875rem;">
-                        {{ field.label }}{% if field.field.required %} <span class="text-danger">*</span>{% endif %}
+                        {{ field.label }}
+                        {% if field.field.required %}
+                        <span class="text-danger">*</span> <!-- Asterisco rojo = campo obligatorio -->
+                        {% endif %}
                     </label>
+
+                    <!-- Renderiza el widget HTML del campo (input, select, textarea, file) -->
                     {{ field }}
+
+                    <!-- Muestra el primer error de validación si el campo falló -->
                     {% if field.errors %}
                     <div class="text-danger" style="font-size:0.8rem;">{{ field.errors.0 }}</div>
                     {% endif %}
+
+                    <!-- Texto de ayuda del campo (si el formulario lo define) -->
                     {% if field.help_text %}
                     <small class="text-muted">{{ field.help_text }}</small>
                     {% endif %}
                 </div>
                 {% endfor %}
+
+                <!-- Botones de acción del formulario -->
                 <div class="d-flex gap-2 mt-4">
+                    <!-- Guardar: envía el formulario (type="submit") -->
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-check2 me-1"></i>{{ accion }}
                     </button>
+                    <!-- Cancelar: vuelve al listado sin guardar cambios -->
                     <a href="{% url 'documento_list' %}" class="btn btn-outline-secondary">
                         <i class="bi bi-x me-1"></i>Cancelar
                     </a>

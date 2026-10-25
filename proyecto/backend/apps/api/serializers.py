@@ -80,7 +80,9 @@ class RevisionSerializer(serializers.ModelSerializer):
         model = RevisionDocumento
         fields = ['idRevision', 'idDocumento', 'idUsuario', 'usuario_nombre',
                   'fechaRevision', 'comentario']
-        read_only_fields = ['fechaRevision', 'idUsuario']
+        # El documento se toma de la URL (/api/documentos/<id>/revisiones/) y el
+        # usuario del token, por lo que el cliente sólo debe enviar el comentario.
+        read_only_fields = ['fechaRevision', 'idUsuario', 'idDocumento']
 
     def create(self, validated_data):
         request = self.context.get('request')
